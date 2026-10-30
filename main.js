@@ -60,14 +60,15 @@
     const endY = m ? 0 : 50, startY = m ? 130 : 250;
     gsap.set(strip, { yPercent: endY, y: 0 });
     const targets = slots.map(s => s.getBoundingClientRect());
-    gsap.set(strip, { yPercent: startY });
+    const peek = m ? strip.offsetHeight + 16 - 56 : 0;
+    gsap.set(strip, m ? { yPercent: 0, y: peek } : { yPercent: startY });
     const sources = flyers.map(f => f.getBoundingClientRect());
     slots.forEach(s => s.style.background = 'transparent');
 
     tl = gsap.timeline({ paused: true, defaults: { ease: 'none' },
       onComplete: () => stage.classList.add('done'),
       onReverseComplete: () => stage.classList.remove('done') });
-    tl.to(strip, { yPercent: endY, duration: 1, ease: 'power2.out' }, 0);
+    tl.to(strip, { yPercent: endY, y: 0, duration: 1, ease: 'power2.out' }, 0);
     // hero text stays solid; the dark strip covers it
     tl.to('.hero-sub', { opacity: 0, duration: 0.2 }, 0);
     flyers.forEach((f, i) => {

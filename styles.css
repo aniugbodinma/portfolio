@@ -217,7 +217,7 @@ h2{font-size:clamp(32px,4vw,51px);font-weight:500;letter-spacing:-.03em;line-hei
   .slot.slot-photo,.slot.slot-logo{width:48px;height:48px;overflow:hidden}
   .slot img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
   .intro-logos{gap:12px;margin-top:-4px}
-  .bg-tiles{display:none}
+  
   /* projects: each project = info then media */
   .projects{height:auto;padding:72px 16px 40px;display:block}
   .pcard{height:auto !important;display:flex;flex-direction:column;gap:0}

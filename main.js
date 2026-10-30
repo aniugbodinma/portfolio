@@ -103,7 +103,7 @@
     if (heroState === 'playing' || heroState === 'reversing') { e.cancelable && e.preventDefault(); return; }
     if (heroState === 'idle' && dy > 0 && atTop()) {
       e.cancelable && e.preventDefault(); heroState = 'playing'; hold();
-      tl.eventCallback('onComplete', () => { stage.classList.add('done'); heroState = 'done'; freeAfterGesture(); }); tl.timeScale(0.25).play();
+      tl.eventCallback('onComplete', () => { stage.classList.add('done'); heroState = 'done'; freeAfterGesture(); }); tl.timeScale(mobile() ? 1/3.5 : 0.25).play();
     } else if (heroState === 'done' && dy < 0 && atTop()) {
       e.cancelable && e.preventDefault(); heroState = 'reversing'; hold();
       tl.eventCallback('onReverseComplete', () => { stage.classList.remove('done'); heroState = 'idle'; freeAfterGesture(); }); tl.timeScale(0.6).reverse();

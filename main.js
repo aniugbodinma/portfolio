@@ -52,18 +52,22 @@
     gsap.set(flyers, { clearProps: 'transform' });
     gsap.set(slots, { clearProps: 'background' });
     stage.classList.remove('done');
-    if (mobile() || reduce) { gsap.set(strip, { clearProps: 'transform' }); slots.forEach((s,i)=>{ s.classList.add('g'+(i+1)); if (mobile() && flyers[i] && !s.querySelector('img')) { const im = flyers[i].querySelector('img'); if (im) { s.appendChild(im.cloneNode()); s.style.background = 'transparent'; } } }); stage.classList.add('done'); return; }
+    const m = mobile();
+    document.documentElement.classList.toggle('anim-m', m && !reduce);
+    if (m && !reduce) slots.forEach(s => { s.querySelectorAll('img').forEach(im => im.remove()); s.style.background = ''; });
+    if (reduce) { gsap.set(strip, { clearProps: 'transform' }); slots.forEach((s,i)=>{ s.classList.add('g'+(i+1)); if (mobile() && flyers[i] && !s.querySelector('img')) { const im = flyers[i].querySelector('img'); if (im) { s.appendChild(im.cloneNode()); s.style.background = 'transparent'; } } }); stage.classList.add('done'); return; }
     // measure slots at final strip position
-    gsap.set(strip, { yPercent: 50, y: 0 });
+    const endY = m ? 0 : 50, startY = m ? 130 : 250;
+    gsap.set(strip, { yPercent: endY, y: 0 });
     const targets = slots.map(s => s.getBoundingClientRect());
-    gsap.set(strip, { yPercent: 250 });
+    gsap.set(strip, { yPercent: startY });
     const sources = flyers.map(f => f.getBoundingClientRect());
     slots.forEach(s => s.style.background = 'transparent');
 
     tl = gsap.timeline({ paused: true, defaults: { ease: 'none' },
       onComplete: () => stage.classList.add('done'),
       onReverseComplete: () => stage.classList.remove('done') });
-    tl.to(strip, { yPercent: 50, duration: 1, ease: 'power2.out' }, 0);
+    tl.to(strip, { yPercent: endY, duration: 1, ease: 'power2.out' }, 0);
     // hero text stays solid; the dark strip covers it
     tl.to('.hero-sub', { opacity: 0, duration: 0.2 }, 0);
     flyers.forEach((f, i) => {
@@ -94,7 +98,7 @@
     ['wheel','touchmove'].forEach(e => window.addEventListener(e, wait, { passive: true })); wait(); };
   let touchY = 0;
   const intent = (dy, e) => {
-    if (!tl || mobile() || reduce) return;
+    if (!tl || reduce) return;
     if (heroState === 'playing' || heroState === 'reversing') { e.cancelable && e.preventDefault(); return; }
     if (heroState === 'idle' && dy > 0 && atTop()) {
       e.cancelable && e.preventDefault(); heroState = 'playing'; hold();
@@ -144,5 +148,5 @@
   window.addEventListener('load', () => setTimeout(() => { window.__pageReady = true; }, 300));
   const init = () => { build(); ScrollTrigger.refresh(); };
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(init); else addEventListener('load', init);
-  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(init, 250); });
+  let rt, lw = innerWidth; addEventListener('resize', () => { if (mobile() && innerWidth === lw) return; lw = innerWidth; clearTimeout(rt); rt = setTimeout(init, 250); });
 })();

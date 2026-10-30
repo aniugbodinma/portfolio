@@ -1,100 +1,148 @@
-// Fade sections in as they scroll into view
-const io = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        e.target.classList.add("in");
-        io.unobserve(e.target);
-      }
-    });
-  },
-  { threshold: 0.12 }
-);
+(function () {
+  const hasGsap = window.gsap && window.ScrollTrigger;
+  const mobile = () => window.matchMedia('(max-width: 820px)').matches;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+  // Placeholder gradients on the strip slots (match the inline images)
+  document.querySelectorAll('.slot').forEach((s, i) => s.classList.add('g' + (i + 1)));
 
-// Curved hero carousel: cards sit on a concave cylinder (edge cards turn toward
-// the viewer) and switch one at a time, gliding the next project into the centre.
-const carousel = document.querySelector(".carousel");
-if (carousel) {
-  // Repeat the card set until the loop is comfortably wider than the screen
-  const originals = [...carousel.querySelectorAll(".ccard")];
-  const stepEstimate = originals[0].offsetWidth + 14;
-  while (carousel.children.length * stepEstimate < Math.max(innerWidth, screen.width) * 1.6) {
-    originals.forEach((c) => {
-      const clone = c.cloneNode(true);
-      clone.setAttribute("aria-hidden", "true"); // repeats are decorative
-      clone.tabIndex = -1;
-      carousel.appendChild(clone);
+  // Lenis smooth scroll
+  let lenis = null;
+  if (window.Lenis && !reduce) {
+    lenis = new Lenis({ duration: 1.15, easing: t => 1 - Math.pow(1 - t, 4) });
+    if (hasGsap) {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(t => lenis.raf(t * 1000));
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length > 1) { e.preventDefault(); lenis.scrollTo(id, { offset: -40 }); }
+      else { e.preventDefault(); lenis.scrollTo(0); }
+    }));
+  }
+
+  // Custom cursor
+  const cur = document.querySelector('.cursor');
+  if (cur && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let x = innerWidth / 2, y = innerHeight / 2, cx = x, cy = y;
+    addEventListener('mousemove', e => { x = e.clientX; y = e.clientY; cur.classList.add('on'); });
+    document.addEventListener('mouseleave', () => cur.classList.remove('on'));
+    const loop = () => { cx += (x - cx) * 0.22; cy += (y - cy) * 0.22; cur.style.transform = `translate(${cx}px,${cy}px)`; requestAnimationFrame(loop); };
+    loop();
+    document.addEventListener('mouseover', e => { cur.classList.toggle('view', !!e.target.closest('a,button,.card,.slot')); });
+  }
+
+  if (!hasGsap) return;
+  gsap.registerPlugin(ScrollTrigger);
+  const ease = 'power3.out';
+
+  // Signature: hero images fly into the dark strip
+  const stage = document.querySelector('.stage');
+  const strip = document.querySelector('.strip');
+  const flyers = [...document.querySelectorAll('.fly')];
+  const slots = [...document.querySelectorAll('.slot')];
+  let tl = null;
+
+  function build() {
+    if (tl) { tl.scrollTrigger && tl.scrollTrigger.kill(); tl.kill(); tl = null; }
+    gsap.set(flyers, { clearProps: 'transform' });
+    gsap.set(slots, { clearProps: 'background' });
+    stage.classList.remove('done');
+    if (mobile() || reduce) { gsap.set(strip, { clearProps: 'transform' }); slots.forEach((s,i)=>{ s.classList.add('g'+(i+1)); if (mobile() && flyers[i] && !s.querySelector('img')) { const im = flyers[i].querySelector('img'); if (im) { s.appendChild(im.cloneNode()); s.style.background = 'transparent'; } } }); stage.classList.add('done'); return; }
+    // measure slots at final strip position
+    gsap.set(strip, { yPercent: 50, y: 0 });
+    const targets = slots.map(s => s.getBoundingClientRect());
+    gsap.set(strip, { yPercent: 250 });
+    const sources = flyers.map(f => f.getBoundingClientRect());
+    slots.forEach(s => s.style.background = 'transparent');
+
+    tl = gsap.timeline({ paused: true, defaults: { ease: 'none' },
+      onComplete: () => stage.classList.add('done'),
+      onReverseComplete: () => stage.classList.remove('done') });
+    tl.to(strip, { yPercent: 50, duration: 1, ease: 'power2.out' }, 0);
+    // hero text stays solid; the dark strip covers it
+    tl.to('.hero-sub', { opacity: 0, duration: 0.2 }, 0);
+    flyers.forEach((f, i) => {
+      const s = sources[i], t = targets[i];
+      if (!t) return;
+      tl.to(f, {
+        x: (t.left + t.width / 2) - (s.left + s.width / 2),
+        y: (t.top + t.height / 2) - (s.top + s.height / 2),
+        scale: t.width / s.width,
+        borderRadius: '50%',
+        duration: 0.9, ease: 'power2.inOut'
+      }, 0.05 + i * 0.03);
     });
   }
-  const cards = [...carousel.querySelectorAll(".ccard")];
-  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const INTERVAL = 3200; // ms each card stays in focus before switching
-  const GAP = 14;
 
-  let index = 0;   // which slot is centred
-  let offset = 0;  // current scroll position (eases toward the target)
-  let paused = false;
-  let lastSwitch = performance.now();
-  let last = performance.now();
-
-  const metrics = () => {
-    const cardW = cards[0].offsetWidth;
-    const step = cardW + GAP;
-    const total = cards.length * step;
-    // Offset at which some card sits exactly in the centre
-    const base = ((total / 2) % step + step) % step;
-    return { cardW, step, total, base };
+  // Hero intro plays on its own (time-based), scroll is held while it runs
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+  let heroState = 'idle'; // idle | playing | done | reversing
+  const atTop = () => (window.scrollY || 0) < 4;
+  const hold = () => { if (lenis) lenis.stop(); document.documentElement.style.overflow = 'hidden'; };
+  const freeAfterGesture = () => { let q, done = false; const go = () => { if (done) return; done = true; clearTimeout(q); clearTimeout(cap);
+      ['wheel','touchmove'].forEach(e => window.removeEventListener(e, wait));
+      document.documentElement.style.overflow = ''; document.documentElement.classList.remove('lenis-stopped');
+      if (lenis) { lenis.start(); lenis.resize && lenis.resize(); } ScrollTrigger.refresh(); };
+    const wait = () => { clearTimeout(q); q = setTimeout(go, 250); };
+    const cap = setTimeout(go, 700); // never stay locked, even with trackpad momentum
+    ['wheel','touchmove'].forEach(e => window.addEventListener(e, wait, { passive: true })); wait(); };
+  let touchY = 0;
+  const intent = (dy, e) => {
+    if (!tl || mobile() || reduce) return;
+    if (heroState === 'playing' || heroState === 'reversing') { e.cancelable && e.preventDefault(); return; }
+    if (heroState === 'idle' && dy > 0 && atTop()) {
+      e.cancelable && e.preventDefault(); heroState = 'playing'; hold();
+      tl.eventCallback('onComplete', () => { stage.classList.add('done'); heroState = 'done'; freeAfterGesture(); }); tl.timeScale(0.25).play();
+    } else if (heroState === 'done' && dy < 0 && atTop()) {
+      e.cancelable && e.preventDefault(); heroState = 'reversing'; hold();
+      tl.eventCallback('onReverseComplete', () => { stage.classList.remove('done'); heroState = 'idle'; freeAfterGesture(); }); tl.timeScale(0.6).reverse();
+    }
   };
-  const targetOffset = () => {
-    const { step, base } = metrics();
-    return base + index * step;
-  };
+  window.addEventListener('wheel', e => intent(e.deltaY, e), { passive: false });
+  window.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+  window.addEventListener('touchmove', e => intent(touchY - e.touches[0].clientY, e), { passive: false });
+  window.addEventListener('keydown', e => { if (['ArrowDown','PageDown',' '].includes(e.key)) intent(1, e); if (['ArrowUp','PageUp'].includes(e.key)) intent(-1, e); });
 
-  const render = () => {
-    const cw = carousel.clientWidth;
-    const { cardW, step, total } = metrics();
-    const half = cw / 2;
+  // Blur reveal headings
+  document.querySelectorAll('.blur-reveal').forEach(h => {
+    gsap.fromTo(h, { opacity: 0, filter: 'blur(14px)', scaleX: 1.08, x: -40, transformOrigin: 'left center' },
+      { opacity: 1, filter: 'blur(0px)', scaleX: 1, x: 0, duration: 1.2, ease,
+        scrollTrigger: { trigger: h, start: 'top 85%' } });
+  });
+  // Parallax highlight
+  const hl = document.querySelector('.hl-bg');
+  if (hl) gsap.fromTo(hl, { x: -14, y: 6 }, { x: 14, y: -6, ease: 'none',
+    scrollTrigger: { trigger: '.split', start: 'top bottom', end: 'bottom top', scrub: true } });
+  // Card stagger
+  gsap.utils.toArray('.card, .steps > div, .cols3 > div').forEach(el => {
+    gsap.from(el, { opacity: 0, y: 40, duration: 1, ease, scrollTrigger: { trigger: el, start: 'top 90%' } });
+  });
 
-    cards.forEach((card, i) => {
-      // Position along the loop, centred on 0
-      const x = ((((i * step - offset) % total) + total) % total) - total / 2;
-      const p = Math.max(-1.25, Math.min(1.25, x / half));
-      const angle = -p * 28;
-      const z = p * p * 140 * Math.min(1, cw / 900); // gentler curve on small screens
-      card.style.transform =
-        `translateX(${half + x - cardW / 2}px) translateZ(${z}px) rotateY(${angle}deg)`;
-      card.style.zIndex = Math.round(Math.abs(p) * 100);
+  // Projects: pinned card, one project per scroll step
+  const pcard = document.querySelector('.pcard');
+  if (pcard && !mobile() && !reduce) {
+    const medias = gsap.utils.toArray('.pmedia'), names = gsap.utils.toArray('.pname'), infos = gsap.utils.toArray('.pinfo');
+    gsap.set(medias.slice(1), { yPercent: 100 });
+    const n = medias.length; let cur = 0;
+    const sec = document.querySelector('.projects'); const moods = ['#F8F8F8','#f5f3ef','#f3f3f5','#f4f5f1']; sec.style.background = moods[0];
+    const setActive = i => { if (i === cur) return; cur = i; sec.style.background = moods[i] || '';
+      names.forEach((e, j) => e.classList.toggle('on', j === i)); infos.forEach((e, j) => e.classList.toggle('on', j === i)); };
+    const ptl = gsap.timeline({ scrollTrigger: { trigger: '.projects', start: 'top top', end: '+=' + (n - 1) * 100 + '%', pin: true, scrub: 0.6,
+      onUpdate: self => setActive(Math.round(self.progress * (n - 1))) } });
+    medias.slice(1).forEach((m, i) => {
+      ptl.to(m, { yPercent: 0, ease: 'power2.inOut', duration: 1 }, i);
+      ptl.to(medias[i], { yPercent: -20, scale: .96, ease: 'power2.inOut', duration: 1 }, i);
     });
-  };
+  }
 
-  const go = (dir) => {
-    index += dir;
-    lastSwitch = performance.now();
-  };
-
-  // Hold the current card while the visitor hovers or tabs into the carousel
-  carousel.addEventListener("mouseenter", () => (paused = true));
-  carousel.addEventListener("mouseleave", () => { paused = false; lastSwitch = performance.now(); });
-  carousel.addEventListener("focusin", () => (paused = true));
-  carousel.addEventListener("focusout", () => (paused = false));
-
-  document.querySelector(".cnav-prev")?.addEventListener("click", () => go(-1));
-  document.querySelector(".cnav-next")?.addEventListener("click", () => go(1));
-
-  const tick = (now) => {
-    if (!paused && !reduceMotion && now - lastSwitch > INTERVAL) go(1);
-    // Smoothly glide to the target card (time-based easing)
-    const k = 1 - Math.exp(-(now - last) / 160);
-    offset += (targetOffset() - offset) * k;
-    last = now;
-    render();
-    requestAnimationFrame(tick);
-  };
-
-  offset = targetOffset();
-  render();
-  addEventListener("resize", () => { offset = targetOffset(); render(); });
-  requestAnimationFrame((t) => { last = t; tick(t); });
-}
+  window.addEventListener('load', () => setTimeout(() => { window.__pageReady = true; }, 300));
+  const init = () => { build(); ScrollTrigger.refresh(); };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(init); else addEventListener('load', init);
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(init, 250); });
+})();

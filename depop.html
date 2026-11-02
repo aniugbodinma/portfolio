@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Depop case study | Chidinma Aniugbo</title>
+<link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png"><link rel="apple-touch-icon" href="images/favicon-180.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#0b0b0d;color:#fff;font-family:Inter,system-ui,sans-serif}
+.back{position:fixed;top:16px;left:16px;z-index:5;font-size:13px;color:#fff;text-decoration:none;background:rgba(0,0,0,.55);padding:8px 14px;border-radius:999px;backdrop-filter:blur(8px)}
+.slide img{display:block;width:100%;height:auto}
+@media (min-width:821px){
+ html,body{height:100%;overflow:hidden}
+ .deck{height:100vh;width:100vw;overflow:hidden;touch-action:pan-y}
+ .track{display:flex;height:100%;transition:transform .6s cubic-bezier(.25,1,.5,1)}
+ .slide{flex:0 0 100vw;height:100vh;display:flex;align-items:center;justify-content:center}
+ .slide img{width:auto;height:auto;max-width:100vw;max-height:100vh;aspect-ratio:16/9}
+ .ctl{position:fixed;bottom:18px;right:18px;z-index:5;display:flex;align-items:center;gap:10px;font-size:13px;background:rgba(0,0,0,.55);padding:6px 8px 6px 14px;border-radius:999px;backdrop-filter:blur(8px)}
+ .ctl button{width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:16px;cursor:pointer}
+ .ctl button:disabled{opacity:.3;cursor:default}
+}
+@media (max-width:820px){.ctl{display:none}.deck{padding-top:56px}.slide+.slide{margin-top:8px}.back{top:12px;left:12px}}
+</style></head><body>
+<a class="back" href="index.html#work">← Back to site</a>
+<main class="deck" id="deck"><div class="track" id="track">
+<figure class="slide"><img src="images/depop/slide-01.webp" alt="Simplifying the bulk listing management process for sellers. Core team • Product Designer (Me) • Product Manager • Content Designer • Researcher • Engineering Manager" width="1920" height="1080" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-02.webp" alt="01 Problems" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-03.webp" alt="35% of products were previously bulk boosted from the seller hub page. With the removal of the Seller Hub, sellers no longer have a central place to bulk manage their listings (Boost), which led to a decrease in Boost adoption. REMOVED The Seller Hub" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-04.webp" alt="Some context Seller Hub A section of the Depop app that provides a dedicated home for all the information and key actions sellers need to run their shops successfully. Boosted Listings A promotional tool to help sellers promote their listings in search and reach more buyers by showing their listings to a wider audience." width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-05.webp" alt="With the removal of the Seller Hub, the Manage Listing page became the new hub for sellers to bulk manage their listings. Manage Listings (New home for sellers to bulk manage their listings)" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-06.webp" alt="With the removal of the Seller Hub, the Manage Listing page became the new hub for sellers to bulk manage their listings. Manage Listings (New home for sellers to bulk manage their listings) Why couldn&#x27;t sellers bulk manage their listings here as it is?" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-07.webp" alt="The previous layout prioritized listings based on how they appeared on the seller&#x27;s profile, regardless of whether they were active listings or not. Most shops on Depop for a while have sold at least 70% of their items. Manage Listings (New home for sellers to bulk manage their listings)" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-08.webp" alt="02 Research" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-09.webp" alt="Seller’s Painpoint As a seller, I want to quickly identify the relevant listings to my action (active and unboosted if I want to boost) to save time and increase sales. As a seller, I want to discover all the available actions I can take to manage my listings in a clear and intuitive way." width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-10.webp" alt="HMW simplify navigation for sellers within the &#x27;Manage Listing&#x27; page to ensure that they can easily discover boosted listings and other key actions?" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-11.webp" alt="Ux Themes Clear Navigation Improve the discoverability of key actions like boosting, discounting, etc. Simplicity Make it easier for sellers to bulk manage their listings" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-12.webp" alt="03 Exploration" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-13.webp" alt="Concept A Tabs Making it easy and fast for sellers to identify their active listing to manage." width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-14.webp" alt="Concept B Pop Up Making it easy for sellers to discover bulk management actions." width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-15.webp" alt="04 Usability Testing" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-16.webp" alt="Concept A (Tabs) 62% of sellers found this prototype very easy to use" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-17.webp" alt="Concept B (Pop Up) 85% of sellers found this prototype very easy to use" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-18.webp" alt="key Research Takeaways Sellers want to be informed that they can perform bulk actions, such as boosting and creating discounts, directly on the manage listings page. Prototype 2 simplified the process of discovering and selecting different actions on the Manage Listings page. 85% of participants rated Prototype 2 as easier to navigate and use compared to other prototype." width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-19.webp" alt="05 Designs" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-20.webp" alt="Before Sellers don’t know they can bulk manage their listings using the Manage Listings feature. After Made it clearer that that ‘Manage Listings&#x27; is about bulk management of listings. 36% more sellers boosted from the shop page during the A/B test as a result of the improved UX copy." width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-21.webp" alt="Before Sellers couldn’t discover all the available actions to manage their listings in a clear and intuitive way. After Made it easier to discover actions for bulk management of listings. +11% more sellers engaged with the manage listing action during the A/B test." width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-22.webp" alt="Before Sellers couldn’t discover all the available actions to manage their listings in a clear and intuitive way. After We automatically showed sellers their listings based on items that are unboosted and unsold. +32% more sellers boosting their listings from shop page during the A/B test as a result of the improved visibility of the actions." width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-23.webp" alt="06 Impact" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-24.webp" alt="New Design ⭐️ went from this Boosting from the shop page Jan, 2024 12%" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+<figure class="slide"><img src="images/depop/slide-25.webp" alt="New Design ⭐️ Jan, 2024 12% May, 2024 30.5% To this Boosting from the shop page" width="1920" height="1080" loading="lazy" decoding="async"></figure>
+</div></main>
+<div class="ctl"><span id="count">1 / 25</span><button id="prev" aria-label="Previous slide">←</button><button id="next" aria-label="Next slide">→</button></div>
+<script>
+(function(){
+var t=document.getElementById('track'),n=t.children.length,i=0,c=document.getElementById('count'),p=document.getElementById('prev'),x=document.getElementById('next'),lock=0;
+var desk=function(){return innerWidth>820};
+function go(k){i=Math.max(0,Math.min(n-1,k));t.style.transform=desk()?'translateX('+(-i*100)+'vw)':'';c.textContent=(i+1)+' / '+n;p.disabled=i==0;x.disabled=i==n-1;
+ var im=t.children[Math.min(n-1,i+1)].querySelector('img');im.loading='eager';}
+p.onclick=function(){go(i-1)};x.onclick=function(){go(i+1)};
+addEventListener('keydown',function(e){if(!desk())return;if(e.key=='ArrowRight'||e.key=='PageDown'||e.key==' '){e.preventDefault();go(i+1)}if(e.key=='ArrowLeft'||e.key=='PageUp'){e.preventDefault();go(i-1)}});
+addEventListener('wheel',function(e){if(!desk()||lock)return;var d=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;if(Math.abs(d)<25)return;lock=1;go(i+(d>0?1:-1));setTimeout(function(){lock=0},700)},{passive:true});
+var sx=null;t.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
+t.addEventListener('touchend',function(e){if(!desk()||sx==null)return;var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>40)go(i+(d<0?1:-1));sx=null});
+addEventListener('resize',function(){go(i)});go(0);
+})();
+</script></body></html>

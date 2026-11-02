@@ -105,10 +105,17 @@
       e.cancelable && e.preventDefault(); heroState = 'playing'; hold();
       tl.eventCallback('onComplete', () => { stage.classList.add('done'); heroState = 'done'; freeAfterGesture(); }); tl.timeScale(mobile() ? 1/3.5 : 0.25).play();
     } else if (heroState === 'done' && dy < 0 && atTop()) {
-      e.cancelable && e.preventDefault(); heroState = 'reversing'; hold();
-      tl.eventCallback('onReverseComplete', () => { stage.classList.remove('done'); heroState = 'idle'; freeAfterGesture(); }); tl.timeScale(0.6).reverse();
+      e.cancelable && e.preventDefault(); rev();
     }
   };
+  // reverse at the same speed as the intro on mobile so scrolling up mirrors scrolling down
+  const rev = () => { heroState = 'reversing'; hold();
+    tl.eventCallback('onReverseComplete', () => { stage.classList.remove('done'); heroState = 'idle'; freeAfterGesture(); }); tl.timeScale(mobile() ? 1/3.5 : 0.6).reverse(); };
+  // mobile: touch momentum carries the page to the top after the finger lifts, so start the reverse when the top is reached
+  let lastY = window.scrollY || 0;
+  window.addEventListener('scroll', () => { const y = window.scrollY || 0;
+    if (tl && !reduce && mobile() && heroState === 'done' && y < 4 && lastY > y) rev();
+    lastY = y; }, { passive: true });
   window.addEventListener('wheel', e => intent(e.deltaY, e), { passive: false });
   window.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
   window.addEventListener('touchmove', e => intent(touchY - e.touches[0].clientY, e), { passive: false });

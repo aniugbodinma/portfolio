@@ -110,7 +110,7 @@
   };
   // reverse at the same speed as the intro on mobile so scrolling up mirrors scrolling down
   const rev = () => { heroState = 'reversing'; hold();
-    tl.eventCallback('onReverseComplete', () => { stage.classList.remove('done'); heroState = 'idle'; freeAfterGesture(); }); tl.timeScale(mobile() ? 1/3.5 : 0.6).reverse(); };
+    tl.eventCallback('onReverseComplete', () => { stage.classList.remove('done'); heroState = 'idle'; freeAfterGesture(); }); tl.timeScale(mobile() ? 1/2 : 0.6).reverse(); };
   // mobile: touch momentum carries the page to the top after the finger lifts, so start the reverse when the top is reached
   let lastY = window.scrollY || 0;
   window.addEventListener('scroll', () => { const y = window.scrollY || 0;

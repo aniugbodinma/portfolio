@@ -145,7 +145,7 @@
     const sec = document.querySelector('.projects'); const moods = ['#F8F8F8','#f5f3ef','#f3f3f5','#f4f5f1']; sec.style.background = moods[0];
     const setActive = i => { if (i === cur) return; cur = i; sec.style.background = moods[i] || '';
       names.forEach((e, j) => e.classList.toggle('on', j === i)); infos.forEach((e, j) => e.classList.toggle('on', j === i)); };
-    const ptl = gsap.timeline({ scrollTrigger: { trigger: '.projects', start: 'top top', end: '+=' + (n - 1) * 100 + '%', pin: true, scrub: 0.6,
+    const ptl = gsap.timeline({ scrollTrigger: { trigger: '.projects', start: 'top top', end: '+=' + (n - 1) * 50 + '%', pin: true, scrub: 0.3,
       onUpdate: self => setActive(Math.round(self.progress * (n - 1))) } });
     medias.slice(1).forEach((m, i) => {
       ptl.to(m, { yPercent: 0, ease: 'power2.inOut', duration: 1 }, i);

@@ -82,6 +82,8 @@
         duration: 0.9, ease: 'power2.inOut'
       }, 0.05 + i * 0.03);
     });
+    // a rebuild (fonts finishing loading, window resize) must not drop the card back off-screen once the intro has played
+    if (heroState !== 'idle') { tl.progress(1); stage.classList.add('done'); heroState = 'done'; freeAfterGesture(); }
   }
 
   // Hero intro plays on its own (time-based), scroll is held while it runs
@@ -136,21 +138,38 @@
     gsap.from(el, { opacity: 0, y: 40, duration: 1, ease, scrollTrigger: { trigger: el, start: 'top 90%' } });
   });
 
-  // Projects: pinned card, one project per scroll step
+  // Projects: pinned card, one project at a time; one gesture = one project
   const pcard = document.querySelector('.pcard');
   if (pcard && !mobile() && !reduce) {
     const medias = gsap.utils.toArray('.pmedia'), names = gsap.utils.toArray('.pname'), infos = gsap.utils.toArray('.pinfo');
-    gsap.set(medias.slice(1), { yPercent: 100 });
-    const n = medias.length; let cur = 0;
+    const n = medias.length; let cur = 0, busy = false, t0 = 0, lastEvt = 0;
     const sec = document.querySelector('.projects'); const moods = ['#F8F8F8','#f5f3ef','#f3f3f5','#f4f5f1']; sec.style.background = moods[0];
-    const setActive = i => { if (i === cur) return; cur = i; sec.style.background = moods[i] || '';
-      names.forEach((e, j) => e.classList.toggle('on', j === i)); infos.forEach((e, j) => e.classList.toggle('on', j === i)); };
-    const ptl = gsap.timeline({ scrollTrigger: { trigger: '.projects', start: 'top top', end: '+=' + (n - 1) * 50 + '%', pin: true, scrub: 0.3,
-      onUpdate: self => setActive(Math.round(self.progress * (n - 1))) } });
-    medias.slice(1).forEach((m, i) => {
-      ptl.to(m, { yPercent: 0, ease: 'power2.inOut', duration: 1 }, i);
-      ptl.to(medias[i], { yPercent: -20, scale: .96, ease: 'power2.inOut', duration: 1 }, i);
-    });
+    gsap.set(medias, { autoAlpha: 0, zIndex: 0 }); gsap.set(medias[0], { autoAlpha: 1, zIndex: 1 });
+    const show = (i, instant) => { if (i === cur && !instant) return; gsap.killTweensOf(medias); const prev = medias[cur]; cur = i; sec.style.background = moods[i] || '';
+      names.forEach((e, j) => e.classList.toggle('on', j === i)); infos.forEach((e, j) => e.classList.toggle('on', j === i));
+      medias.forEach((m, j) => { if (j !== i && m !== prev) gsap.set(m, { autoAlpha: 0, zIndex: 0 }); });
+      gsap.set(medias[i], { zIndex: 1 });
+      if (instant) { gsap.set(medias, { autoAlpha: 0 }); gsap.set(medias[i], { autoAlpha: 1, y: 0 }); return; }
+      gsap.fromTo(medias[i], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: .45, ease: 'power2.out' });
+      gsap.to(prev, { autoAlpha: 0, duration: .3, ease: 'power1.out', onComplete: () => gsap.set(prev, { zIndex: 0 }) }); };
+    const st = ScrollTrigger.create({ trigger: '.projects', start: 'top top', end: '+=' + (n - 1) * 25 + '%', pin: true,
+      onEnter: () => { if (!busy) { jump(0); arrive(); } }, onEnterBack: () => { if (!busy) { jump(n - 1); arrive(); } } });
+    const arrive = () => { busy = true; t0 = performance.now(); lastEvt = t0; }; // absorb the rest of the scroll that brought us here
+    const posFor = i => st.start + (st.end - st.start) * i / (n - 1);
+    const jump = i => { show(i, true); const y = posFor(i); if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else window.scrollTo(0, y); };
+    const inRange = () => { const y = window.scrollY; return y >= st.start - 2 && y <= st.end + 2; };
+    const step = (dir, e) => {
+      if (mobile() || !inRange()) return;
+      const next = cur + dir;
+      if (next < 0 || next >= n) { if (busy) { e.preventDefault(); e.stopImmediatePropagation(); } return; } // let the page scroll on past the ends
+      e.preventDefault(); e.stopImmediatePropagation();
+      if (busy) return; busy = true; t0 = performance.now();
+      show(next); const y = posFor(next); if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else window.scrollTo(0, y); };
+    // a trackpad flick keeps firing wheel events; stay locked until 500ms passed and the wheel has been quiet for 180ms
+    setInterval(() => { const t = performance.now(); if (busy && t - t0 > 500 && t - lastEvt > 180) busy = false; }, 50);
+    window.addEventListener('wheel', e => { if (inRange() && !mobile()) lastEvt = performance.now();
+      if (Math.abs(e.deltaY) < 2 && !busy) return; step(e.deltaY > 0 ? 1 : -1, e); }, { passive: false, capture: true });
+    window.addEventListener('keydown', e => { if (['ArrowDown','PageDown',' '].includes(e.key)) step(1, e); else if (['ArrowUp','PageUp'].includes(e.key)) step(-1, e); }, { capture: true });
   }
 
   window.addEventListener('load', () => setTimeout(() => { window.__pageReady = true; }, 300));

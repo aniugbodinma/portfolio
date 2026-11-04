@@ -275,4 +275,4 @@ h2{font-size:clamp(32px,4vw,51px);font-weight:500;letter-spacing:-.03em;line-hei
 .pshot:not(.phone){overflow:hidden}
 .pshot:not(.phone) img{width:100%;height:100%;object-fit:cover;object-position:center;border-radius:12px;display:block}
 .pmedia.g1,.pmedia.g1:hover{background:#75D1FD !important}
-.cursor.view{width:auto;height:auto;margin:0;background:none}.cursor.view span,.cursor span{display:none}
+.cursor.view{width:18px;height:18px;margin:-9px 0 0 -9px;background:var(--cur)}.cursor span{display:none}

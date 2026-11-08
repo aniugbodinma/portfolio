@@ -138,18 +138,14 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .charts img { border-radius: 10px; box-shadow: none; filter: none; background: #fff; }
 .shot { margin: 22px 0 8px; }
 .shot img { width: 100%; border-radius: 10px; box-shadow: none; filter: none; }
-.flow img { width: min(250px, 72%); margin: 0 auto; border-radius: 22px; }
-.play {
-  display: inline-flex;
-  align-items: center;
-  min-height: 36px;
-  margin-top: 4px;
-  padding: 0 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--surface);
-  font-size: 13px;
-  font-weight: 500;
+.clip { margin: 22px 0 8px; }
+.clip video {
+  display: block;
+  width: min(250px, 78%);
+  height: auto;
+  margin: 0 auto;
+  border-radius: 18px;
+  background: #111;
 }
 .frame figcaption, .cap {
   margin: 10px auto 0;

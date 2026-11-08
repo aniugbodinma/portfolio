@@ -31,10 +31,18 @@
     <h2 id="overview">Overview</h2>
     <p>35% of products were previously bulk boosted from the seller hub page. With the removal of the Seller Hub, sellers no longer had a central place to bulk manage their listings (Boost), which led to a decrease in Boost adoption.</p>
     <p><span class="led">Seller Hub</span> was the section of the Depop app that provided a dedicated home for all the information and key actions sellers need to run their shops successfully. <span class="led">Boosted Listings</span> is the tool that helps sellers promote their listings in search and reach more buyers.</p>
-    <figure class="frame">
-      <img src="images/depop/ui/seller-hub.webp" width="640" height="670" alt="The Seller Hub: a shop manage view and a Boost listings screen, marked removed." loading="lazy" decoding="async">
-      <figcaption class="cap">The Seller Hub, as marked in the deck.</figcaption>
-    </figure>
+    <div class="frame">
+      <div class="frame-row">
+        <figure>
+          <img src="images/depop/ui/hub-manage.webp" width="236" height="512" alt="Seller Hub manage view. Reach more buyers, Start boosting, sold items, and a selling grid." loading="lazy" decoding="async">
+          <figcaption>Manage</figcaption>
+        </figure>
+        <figure>
+          <img src="images/depop/ui/hub-boost.webp" width="236" height="512" alt="Seller Hub Boost listings screen, with live boosted listings and a grid of items." loading="lazy" decoding="async">
+          <figcaption>Boost listings</figcaption>
+        </figure>
+      </div>
+    </div>
 
     <h2 id="impact-early">What’s the impact?</h2>
     <ul>
@@ -55,11 +63,11 @@
       <li>Limited view of active listings to bulk manage</li>
       <li>Limited view of active listings not boosted &amp; discounted</li>
     </ul>
-    <figure class="frame">
-      <div class="single">
-        <img src="images/depop/ui/sold-grid.webp" width="383" height="756" alt="Manage listings in profile order. Most tiles are marked sold. Boost, Discount, Mark sold and Delete sit on the bottom bar." loading="lazy" decoding="async">
-      </div>
-      <figcaption class="cap">Manage Listings, ordered like the shop. Sold items come first.</figcaption>
+    <figure class="clip">
+      <video controls playsinline preload="metadata" poster="images/depop/media/old-manage-listings-poster.webp" width="600" height="1292" aria-label="Recording of the old Manage Listings flow, eight and a half seconds, no audio.">
+        <source src="images/depop/media/old-manage-listings.mp4" type="video/mp4">
+      </video>
+      <figcaption class="cap">Manage Listings before the change. Eight and a half seconds. Press play. The file has no audio.</figcaption>
     </figure>
     <figure class="shot">
       <img src="images/depop/ui/limits-diagram.webp" width="1015" height="900" alt="Manage Listings, mostly sold items, linked to three limits: reduced visibility of actions such as Boost and Discount, a limited view of active listings to bulk manage, and a limited view of active listings that are not boosted and discounted." loading="lazy" decoding="async">
@@ -96,11 +104,11 @@
     <p>Each chart was 13 responses, from very difficult (1) to very easy (7). Tabs: 0%, 0%, 0%, 8%, 15%, 15%, 62%. Pop up: 0%, 0%, 0%, 0%, 15%, 0%, 85%.</p>
     <div class="frame charts">
       <figure>
-        <img src="images/depop/ui/chart-tabs.webp" width="504" height="334" alt="Survey chart for the tabs prototype. 13 responses. Very easy is 62 percent. The other labeled bars are 0, 0, 0, 8, 15 and 15 percent." loading="lazy" decoding="async">
+        <img src="images/depop/ui/chart-tabs.webp" width="1487" height="1016" alt="Survey chart for the tabs prototype. 13 responses. Very easy is 62 percent. The other labeled bars are 0, 0, 0, 8, 15 and 15 percent." loading="lazy" decoding="async">
         <figcaption>Tabs</figcaption>
       </figure>
       <figure>
-        <img src="images/depop/ui/chart-popup.webp" width="504" height="334" alt="Survey chart for the pop-up prototype. 13 responses. Very easy is 85 percent. One other bar is 15 percent." loading="lazy" decoding="async">
+        <img src="images/depop/ui/chart-popup.webp" width="512" height="350" alt="Survey chart for the pop-up prototype. 13 responses. Very easy is 85 percent. One other bar is 15 percent." loading="lazy" decoding="async">
         <figcaption>Pop up</figcaption>
       </figure>
     </div>
@@ -119,28 +127,40 @@
         <button type="button" role="tab" id="tab-b" aria-controls="panel-b" aria-selected="false" tabindex="-1">Pop up</button>
       </div>
       <div id="panel-a" data-panel role="tabpanel" aria-labelledby="tab-a">
+        <figure class="clip">
+          <video controls playsinline preload="metadata" poster="images/depop/media/concept-a-tabs-poster.webp" width="600" height="1358" aria-label="Recording of the Tabs prototype, 28 seconds, no audio.">
+            <source src="images/depop/media/concept-a-tabs.mp4" type="video/mp4">
+          </video>
+          <figcaption class="cap">Tabs prototype. 28 seconds. Press play. No audio.</figcaption>
+        </figure>
         <div class="frame">
           <div class="frame-row">
             <figure>
-              <img src="images/depop/ui/tabs-active.webp" width="342" height="735" alt="Active tab. Unsold listings, three selected, with Boost, Discount, Mark sold and Delete." loading="lazy" decoding="async">
+              <img src="images/depop/ui/tabs-active.webp" width="750" height="1624" alt="Active tab. Unsold listings, three selected, with Boost, Discount, Mark sold and Delete." loading="lazy" decoding="async">
               <figcaption>Active</figcaption>
             </figure>
             <figure>
-              <img src="images/depop/ui/tabs-sold.webp" width="341" height="735" alt="Sold tab. Sold listings kept separate from active ones." loading="lazy" decoding="async">
+              <img src="images/depop/ui/tabs-sold.webp" width="750" height="1624" alt="Sold tab. Sold listings kept separate from active ones." loading="lazy" decoding="async">
               <figcaption>Sold</figcaption>
             </figure>
           </div>
         </div>
       </div>
       <div id="panel-b" data-panel role="tabpanel" aria-labelledby="tab-b" hidden>
+        <figure class="clip">
+          <video controls playsinline preload="metadata" poster="images/depop/media/concept-b-popup-poster.webp" width="600" height="1358" aria-label="Recording of the Pop up prototype, 30 seconds, no audio.">
+            <source src="images/depop/media/concept-b-popup.mp4" type="video/mp4">
+          </video>
+          <figcaption class="cap">Pop up prototype. 30 seconds. Press play. No audio.</figcaption>
+        </figure>
         <div class="frame">
           <div class="frame-row">
             <figure>
-              <img src="images/depop/ui/popup-menu.webp" width="341" height="735" alt="Pop up on the shop. Boost, Discount, Mark sold and Delete, above Manage listings." loading="lazy" decoding="async">
+              <img src="images/depop/ui/popup-menu.webp" width="750" height="1624" alt="Pop up on the shop. Boost, Discount, Mark sold and Delete, above Manage listings." loading="lazy" decoding="async">
               <figcaption>Actions</figcaption>
             </figure>
             <figure>
-              <img src="images/depop/ui/popup-boost.webp" width="341" height="735" alt="Six listings selected, with a Boost button." loading="lazy" decoding="async">
+              <img src="images/depop/ui/popup-boost.webp" width="750" height="1624" alt="Six listings selected, with a Boost button." loading="lazy" decoding="async">
               <figcaption>Boost</figcaption>
             </figure>
           </div>
@@ -151,25 +171,17 @@
     <p>Sellers want to be informed that they can perform bulk actions, such as boosting and creating discounts, directly on the manage listings page. Prototype 2 simplified discovering and selecting those actions. 85% of participants rated Prototype 2 as easier to navigate and use compared to other prototype. That is the pop up: the only prototype 85% of sellers found very easy to use.</p>
 
     <h2 id="shipped">What shipped?</h2>
-    <p>This recording follows the prototype from Manage listings, through selecting items, to confirm and boost. It runs about eight seconds and loops while it is playing. The first frame stays in place until you start it.</p>
-    <figure class="frame flow">
-      <img id="boost-flow" src="images/depop/ui/boost-flow-poster.webp" width="600" height="1359" alt="Still from the boost-flow recording: the shop with Manage listings. Play to see selection, Boost, and confirm." data-still="images/depop/ui/boost-flow-poster.webp" data-gif="images/depop-shop-2.gif" decoding="async">
-      <figcaption class="cap">
-        <button type="button" class="play" id="boost-play" aria-controls="boost-flow" aria-pressed="false">Play boost flow</button>
-      </figcaption>
-    </figure>
-
     <h3>The button says what the page does</h3>
     <p>Before, sellers didn’t know they could bulk manage their listings using the Manage Listings feature. After, it was clearer that ‘Manage Listings’ is about bulk management of listings. The button reads Bulk actions.</p>
     <p>36% more sellers boosted from the shop page during the A/B test as a result of the improved UX copy.</p>
     <div class="frame">
       <div class="frame-row">
         <figure>
-          <img src="images/depop/ui/shop-manage.webp" width="361" height="780" alt="Before. The shop button says Manage listings." loading="lazy" decoding="async">
+          <img src="images/depop/ui/shop-before.webp" width="750" height="1624" alt="Before. The shop button says Manage listings." loading="lazy" decoding="async">
           <figcaption>Before</figcaption>
         </figure>
         <figure>
-          <img src="images/depop/ui/shop-selling.webp" width="369" height="780" alt="After. Selling tab, and a button labeled Bulk actions." loading="lazy" decoding="async">
+          <img src="images/depop/ui/shop-after.webp" width="1500" height="3248" alt="After. Selling tab, and a button labeled Bulk actions." loading="lazy" decoding="async">
           <figcaption>After</figcaption>
         </figure>
       </div>
@@ -181,11 +193,11 @@
     <div class="frame">
       <div class="frame-row">
         <figure>
-          <img src="images/depop/ui/sold-grid.webp" width="383" height="756" alt="Before. Actions sit on a bottom bar under a grid of sold items." loading="lazy" decoding="async">
+          <img src="images/depop/ui/manage-sold.webp" width="750" height="1624" alt="Before. Actions sit on a bottom bar under a grid of sold items." loading="lazy" decoding="async">
           <figcaption>Before</figcaption>
         </figure>
         <figure>
-          <img src="images/depop/ui/actions-sheet.webp" width="373" height="780" alt="After. A sheet titled Bulk actions, with Boost, Discount, Mark as sold, Unboost and Delete." loading="lazy" decoding="async">
+          <img src="images/depop/ui/actions-after.webp" width="1500" height="3248" alt="After. A sheet titled Bulk actions, with Boost, Discount, Mark as sold, Unboost and Delete." loading="lazy" decoding="async">
           <figcaption>After</figcaption>
         </figure>
       </div>
@@ -197,11 +209,11 @@
     <div class="frame">
       <div class="frame-row">
         <figure>
-          <img src="images/depop/ui/sold-grid.webp" width="383" height="756" alt="Before. Sold items still lead the grid." loading="lazy" decoding="async">
+          <img src="images/depop/ui/manage-sold.webp" width="750" height="1624" alt="Before. Sold items still lead the grid." loading="lazy" decoding="async">
           <figcaption>Before</figcaption>
         </figure>
         <figure>
-          <img src="images/depop/ui/unboosted.webp" width="373" height="780" alt="After. Unsold listings, three selected, and a Boost button." loading="lazy" decoding="async">
+          <img src="images/depop/ui/unboosted-after.webp" width="750" height="1624" alt="After. Unsold listings, three selected, and a Boost button." loading="lazy" decoding="async">
           <figcaption>After</figcaption>
         </figure>
       </div>

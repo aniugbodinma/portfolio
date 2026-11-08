@@ -4,7 +4,7 @@
 <title>Chidinma Aniugbo — Product Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=112">
+<link rel="stylesheet" href="styles.css?v=115">
 <link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png"><link rel="apple-touch-icon" href="images/favicon-180.png"></head><body>
 <div class="cursor" aria-hidden="true"><span></span></div>
 <header class="nav">
@@ -29,12 +29,66 @@
 </section>
 
 <section class="projects" id="work">
-  <div class="pcard">
-    <div class="pleft">
-      <ul class="plist"><li class="pname on">01</li><li class="pname">02</li><li class="pname">03</li><li class="pname">04</li></ul>
-      <div class="pinfos"><div class="pinfo on"><span class="ptag">Depop · Marketplace · Mobile</span><h3>Simplifying bulk listing management for sellers</h3><p>Turned Manage Listings into the sellers' hub for bulk actions, driving +32% more sellers boosting.</p><dl><div><dt>Role</dt><dd>Product Designer</dd></div><div><dt>Year</dt><dd>2024</dd></div></dl><a class="pbtn" href="depop.html">View case study</a></div><div class="pinfo"><span class="ptag">Shopify Logistics · B2B · Web</span><h3>Improving barcode handling &amp; compliance in Shopify Logistics</h3><p>Fixed missing and duplicate barcodes, enabling standard barcodes on 230,000+ products.</p><dl><div><dt>Role</dt><dd>Product Designer</dd></div><div><dt>Year</dt><dd>2022–23</dd></div></dl><a class="pbtn" href="case-study.html">View case study</a></div><div class="pinfo"><span class="ptag">CcHub Design Lab · Health · Web</span><h3>Improving disease surveillance and detection in Africa</h3><p>A Pan-African network using data and technology to monitor and detect disease.</p><dl><div><dt>Role</dt><dd>Product Designer</dd></div><div><dt>Year</dt><dd>2021</dd></div></dl><a class="pbtn" href="case-study.html">View case study</a></div><div class="pinfo"><span class="ptag">CcHub Design Lab · Health · Web</span><h3>Scaling up Covid-19 testing capacity in Nigeria</h3><p>A practice management system that helped scale Covid-19 testing across Nigeria.</p><dl><div><dt>Role</dt><dd>Product Designer</dd></div><div><dt>Year</dt><dd>2020</dd></div></dl><a class="pbtn" href="case-study.html">View case study</a></div></div>
+  <div class="work">
+    <div class="work-switch">
+      <button class="work-arrow" type="button" data-dir="-1" aria-label="Previous project">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="work-tabs" role="tablist" aria-label="Selected work" aria-orientation="horizontal">
+        <button class="work-tab is-logo" type="button" role="tab" id="work-tab-0" data-dock="monday" data-color="#eceae4" aria-controls="work-panel-0" aria-selected="false" tabindex="-1">
+          <img src="images/monday-circle.png?v=4" alt="" width="64" height="64">
+          <span class="vh">monday.com</span>
+        </button>
+        <button class="work-tab is-logo" type="button" role="tab" id="work-tab-1" data-dock="shopify" data-color="#967cef" aria-controls="work-panel-1" aria-selected="false" tabindex="-1">
+          <img src="images/shopify-circle.png" alt="" width="64" height="64">
+          <span class="vh">Shopify Logistics</span>
+        </button>
+        <button class="work-tab is-logo" type="button" role="tab" id="work-tab-2" data-dock="depop" data-color="#75D1FD" aria-controls="work-panel-2" aria-selected="true" tabindex="0">
+          <img src="images/depop-circle.png" alt="" width="64" height="64">
+          <span class="vh">Depop</span>
+        </button>
+        <span class="work-pip" aria-hidden="true"></span>
+      </div>
+      <button class="work-arrow" type="button" data-dir="1" aria-label="Next project">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
     </div>
-    <div class="pright"><div class="pmedia g1" data-c="#75D1FD"><div class="pshot phone"><img src="images/depop-shop-2.gif?v=3" alt="Depop shop screen"></div></div><div class="pmedia g2" data-c="#967cef"><div class="pshot"><img src="images/project-2.png" alt="Shopify Logistics barcode screens"></div></div><div class="pmedia g3" data-c="#f095b1"><div class="pshot"><img src="images/project-3.png" alt="ADEIN platform screens"></div></div><div class="pmedia g4" data-c="#c0e26e"><div class="pshot"><img src="images/project-4.png" alt="Covid-19 testing system screens"></div></div></div>
+    <div class="work-panels">
+      <article class="work-panel" id="work-panel-0" role="tabpanel" aria-labelledby="work-tab-0">
+        <div class="work-copy">
+          <p class="ptag">monday.com</p>
+          <h3>monday.com</h3>
+          <p>I’ve worked with companies like monday.com, Shopify and Depop. There isn’t a monday.com case study on this page.</p>
+        </div>
+        <div class="work-visual" data-tone="#eceae4">
+          <img class="work-mark" src="images/monday-circle.png?v=4" alt="monday.com">
+        </div>
+      </article>
+      <article class="work-panel" id="work-panel-1" role="tabpanel" aria-labelledby="work-tab-1">
+        <div class="work-copy">
+          <p class="ptag">Shopify Logistics · B2B · Web</p>
+          <h3>Improving barcode handling &amp; compliance in Shopify Logistics</h3>
+          <p>Fixed missing and duplicate barcodes, enabling standard barcodes on 230,000+ products.</p>
+          <dl><div><dt>Role</dt><dd>Product Designer</dd></div><div><dt>Year</dt><dd>2022–23</dd></div></dl>
+          <a class="work-link" href="case-study.html">View case study</a>
+        </div>
+        <div class="work-visual" data-tone="#967cef">
+          <img src="images/project-2.png" alt="Shopify Logistics barcode screens" width="1200" height="750">
+        </div>
+      </article>
+      <article class="work-panel is-on" id="work-panel-2" role="tabpanel" aria-labelledby="work-tab-2">
+        <div class="work-copy">
+          <p class="ptag">Depop · Marketplace · Mobile</p>
+          <h3>Simplifying bulk listing management for sellers</h3>
+          <p>Turned Manage Listings into the sellers’ hub for bulk actions, driving +32% more sellers boosting.</p>
+          <dl><div><dt>Role</dt><dd>Product Designer</dd></div><div><dt>Year</dt><dd>2024</dd></div></dl>
+          <a class="work-link" href="depop.html">View case study</a>
+        </div>
+        <div class="work-visual is-phone" data-tone="#75D1FD">
+          <img src="images/depop-shop-2.gif?v=3" alt="Depop shop screen" width="600" height="1359">
+        </div>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -49,5 +103,5 @@
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="main.js?v=91"></script>
+<script src="main.js?v=93"></script>
 <script src="bg-tiles.js?v=5"></script></body></html>

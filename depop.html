@@ -10,361 +10,180 @@
 <link rel="apple-touch-icon" href="images/favicon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,560;1,9..144,500;1,9..144,560&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="depop.css">
 <link rel="preload" as="image" href="images/depop/ui/shop-selling.webp">
 </head>
 <body>
-<script>
-try { if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("js"); } catch (e) {}
-</script>
-<a class="skip" href="#content">Skip to content</a>
-<header class="top">
-  <div class="top-in">
-    <a class="back" href="index.html#work">← Back to work</a>
-    <nav class="crumbs" aria-label="Case study sections">
-      <a href="#problem" data-nav>Problem</a>
-      <a href="#research" data-nav>Research</a>
-      <a href="#exploration" data-nav>Exploration</a>
-      <a href="#testing" data-nav>Testing</a>
-      <a href="#design" data-nav>Design</a>
-      <a href="#impact" data-nav>Impact</a>
-    </nav>
+<div class="progress" aria-hidden="true"></div>
+<main class="cs">
+  <a class="back" href="index.html#work">← Back to work</a>
+  <h1 class="title">Simplifying the bulk listing management process for sellers (2024)</h1>
+  <p class="dek">When the Seller Hub was removed, sellers lost the place where 35% of products had been bulk boosted. Manage Listings had to become that home.</p>
+  <p class="meta">Product Designer, with a Product Manager, Content Designer, Researcher and Engineering Manager. Depop, mobile.</p>
+
+  <div class="stage">
+    <img src="images/depop/ui/shop-selling.webp" width="369" height="780" alt="The shop on the Selling tab, with a Bulk actions button under the listing grid." fetchpriority="high" decoding="async">
   </div>
-</header>
+  <p class="cap">Shop page after the work. Sellers reach bulk actions from here.</p>
 
-<main id="content">
-  <header class="page hero">
-    <div class="hero-copy">
-      <p class="kicker">Depop · Marketplace · Mobile · 2024</p>
-      <h1>Simplifying the <em class="mark">bulk listing management</em> process for sellers.</h1>
-      <p class="lede">After the Seller Hub was removed, Manage Listings had to become the place sellers boost, discount, and otherwise run a shop in bulk.</p>
-      <div class="hero-visual">
-        <img src="images/depop/ui/shop-selling.webp" width="369" height="780" alt="Depop shop on the Selling tab, with Likes and Saves, Purchases, and a Bulk actions button under the listing grid." fetchpriority="high" decoding="async">
-      </div>
-      <p class="outcome">
-        <span class="outcome-k">Boosting from the shop page</span>
-        <span class="outcome-n">
-          <span class="statpair"><b>12%</b> <span class="when">Jan 2024</span></span>
-          <span class="to">to</span>
-          <span class="statpair"><b>30.5%</b> <span class="when">May 2024</span></span>
-        </span>
-      </p>
-      <dl class="facts">
-        <div>
-          <dt>Role</dt>
-          <dd>Product Designer</dd>
-        </div>
-        <div>
-          <dt>Year</dt>
-          <dd>2024</dd>
-        </div>
-        <div>
-          <dt>Platform</dt>
-          <dd>Depop mobile</dd>
-        </div>
-        <div class="wide">
-          <dt>Core team</dt>
-          <dd>
-            <ul>
-              <li>Product Designer (me)</li>
-              <li>Product Manager</li>
-              <li>Content Designer</li>
-              <li>Researcher</li>
-              <li>Engineering Manager</li>
-            </ul>
-          </dd>
-        </div>
-      </dl>
-    </div>
-  </header>
+  <article class="body">
+    <h2 id="overview">Overview</h2>
+    <p>35% of products were previously bulk boosted from the seller hub page. With the removal of the Seller Hub, sellers no longer had a central place to bulk manage their listings (Boost), which led to a decrease in Boost adoption.</p>
+    <p><span class="led">Seller Hub</span> was the section of the Depop app that provided a dedicated home for all the information and key actions sellers need to run their shops successfully. <span class="led">Boosted Listings</span> is the tool that helps sellers promote their listings in search and reach more buyers.</p>
 
-  <section class="sec" id="problem">
-    <div class="page split problem reveal">
-      <div>
-        <header class="sec-h">
-          <p class="idx">01</p>
-          <h2>Problems</h2>
-        </header>
-        <p class="stat"><b>35%</b> of products were previously bulk boosted from the seller hub page.</p>
-        <p>With the removal of the Seller Hub, sellers no longer have a central place to bulk manage their listings (Boost), which led to a decrease in Boost adoption.</p>
-        <p class="label">Some context</p>
-        <div class="defs">
-          <article class="def">
-            <h3>Seller Hub</h3>
-            <p>A section of the Depop app that provides a dedicated home for all the information and key actions sellers need to run their shops successfully.</p>
-          </article>
-          <article class="def">
-            <h3>Boosted Listings</h3>
-            <p>A promotional tool to help sellers promote their listings in search and reach more buyers by showing their listings to a wider audience.</p>
-          </article>
-        </div>
-      </div>
-      <figure class="device">
-        <img src="images/depop/ui/shop-manage.webp" width="361" height="780" alt="Shop profile with a Manage listings button under a grid that still includes sold items." loading="lazy" decoding="async">
-        <figcaption>Manage Listings, the new hub</figcaption>
-      </figure>
+    <h2 id="impact-early">What’s the impact?</h2>
+    <ul>
+      <li>Boosting from the shop page went from 12% in January 2024 to 30.5% in May 2024</li>
+      <li>36% more sellers boosted from the shop page in the copy A/B test</li>
+      <li>+11% more sellers engaged with the manage listing action</li>
+      <li>+32% more sellers boosting from the shop page after unboosted, unsold listings were shown first</li>
+    </ul>
+    <div class="bars" role="img" aria-label="Boosting from the shop page, 12 percent in January 2024 and 30.5 percent in May 2024.">
+      <span>Jan 2024</span><i class="a" style="--w:39%"></i>
+      <span>May 2024</span><i class="b" style="--w:100%"></i>
     </div>
 
-    <div class="band">
-      <div class="page">
-        <p class="label">Manage Listings</p>
-        <h3 class="question">Why couldn’t sellers bulk manage their listings here as it is?</h3>
-        <p class="band-copy">With the removal of the Seller Hub, the Manage Listing page became the new hub for sellers to bulk manage their listings.</p>
+    <h2 id="problem">What’s the problem?</h2>
+    <p>With the removal of the Seller Hub, the Manage Listing page became the new hub for sellers to bulk manage their listings. It still wasn’t a place they could use that way.</p>
+    <p>Why couldn’t sellers bulk manage their listings here as it is? The previous layout prioritized listings based on how they appeared on the seller’s profile, regardless of whether they were active listings or not. Most shops on Depop for a while have sold at least 70% of their items.</p>
+    <ul>
+      <li>Reduced visibility of actions (Boost, Discount…)</li>
+      <li>Limited view of active listings to bulk manage</li>
+      <li>Limited view of active listings not boosted &amp; discounted</li>
+    </ul>
+    <figure class="frame">
+      <div class="single">
+        <img src="images/depop/ui/sold-grid.webp" width="383" height="756" alt="Manage listings in profile order. Most tiles are marked sold. Boost, Discount, Mark sold and Delete sit on the bottom bar." loading="lazy" decoding="async">
       </div>
-    </div>
+      <figcaption class="cap">Manage Listings, ordered like the shop. Sold items come first.</figcaption>
+    </figure>
 
-    <div class="page split problem reveal follow">
-      <div>
-        <p class="note-70">The previous layout prioritized listings based on how they appeared on the seller’s profile, regardless of whether they were active listings or not.</p>
-        <p class="note-70">Most shops on Depop for a while have sold at least <em class="mark">70%</em> of their items.</p>
-        <ul class="limits">
-          <li>Reduced visibility of actions (Boost, Discount…)</li>
-          <li>Limited view of active listings to bulk manage</li>
-          <li>Limited view of active listings not boosted &amp; discounted</li>
+    <h2 id="research">What did sellers need?</h2>
+    <p>As a seller, I want to quickly identify the relevant listings to my action (active and unboosted if I want to boost) to save time and increase sales.</p>
+    <p>As a seller, I want to discover all the available actions I can take to manage my listings in a clear and intuitive way.</p>
+    <p>How might we simplify navigation for sellers within the ‘Manage Listing’ page to ensure that they can easily discover boosted listings and other key actions?</p>
+    <p>Two themes came out of that. <strong>Clear navigation:</strong> improve the discoverability of key actions like boosting, discounting, etc. <strong>Simplicity:</strong> make it easier for sellers to bulk manage their listings.</p>
+
+    <h2 id="tried">What did we try?</h2>
+    <div class="compare">
+      <div class="cmp">
+        <p class="lab">Concept A</p>
+        <p class="tt">Tabs. 62% found this very easy.</p>
+        <ul>
+          <li>Making it easy and fast for sellers to identify their active listing to manage.</li>
+          <li>Pro. Participants found the boosting &amp; discount flow fast, intuitive, and easy to perform.</li>
+          <li>Con. The seller actions at the bottom was not immediately noticeable.</li>
         </ul>
       </div>
-      <figure class="device">
-        <img src="images/depop/ui/sold-grid.webp" width="383" height="756" alt="Manage listings grid in profile order. Most tiles are marked sold. Boost, Discount, Mark sold, and Delete sit along the bottom." loading="lazy" decoding="async">
-        <figcaption>Active listings, buried</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section class="sec" id="research">
-    <div class="page reveal">
-      <header class="sec-h">
-        <p class="idx">02</p>
-        <h2>Research</h2>
-      </header>
-      <h3>Seller’s pain points</h3>
-      <div class="needs">
-        <blockquote>
-          <p>As a seller, I want to quickly identify the relevant listings to my action (active and unboosted if I want to boost) to save time and increase sales.</p>
-        </blockquote>
-        <blockquote>
-          <p>As a seller, I want to discover all the available actions I can take to manage my listings in a clear and intuitive way.</p>
-        </blockquote>
-      </div>
-      <div class="hmw">
-        <p class="label">How might we</p>
-        <p>How might we simplify navigation for sellers within the ‘Manage Listing’ page to ensure that they can easily discover boosted listings and other key actions?</p>
-      </div>
-      <h3>UX themes</h3>
-      <div class="themes">
-        <article class="theme">
-          <h4>Clear navigation</h4>
-          <p>Improve the discoverability of key actions like boosting, discounting, etc.</p>
-        </article>
-        <article class="theme">
-          <h4>Simplicity</h4>
-          <p>Make it easier for sellers to bulk manage their listings.</p>
-        </article>
+      <div class="cmp chosen">
+        <p class="lab">Concept B · Prototype 2</p>
+        <p class="tt">Pop up. 85% found this very easy.</p>
+        <ul>
+          <li>Making it easy for sellers to discover bulk management actions.</li>
+          <li>Pro. Participants generally found the flows fast and easy because the actions were visible.</li>
+          <li>Con. Some people selected items on the profile, intending to boost, instead of using the manage listing CTA.</li>
+        </ul>
       </div>
     </div>
-  </section>
+    <p>Each chart was 13 responses, from very difficult (1) to very easy (7). Tabs: 0%, 0%, 0%, 8%, 15%, 15%, 62%. Pop up: 0%, 0%, 0%, 0%, 15%, 0%, 85%.</p>
 
-  <section class="sec" id="exploration">
-    <div class="page">
-      <header class="sec-h reveal">
-        <p class="idx">03</p>
-        <h2>Exploration</h2>
-      </header>
-
-      <article class="concept reveal">
-        <p class="label">Concept A</p>
-        <h3>Tabs</h3>
-        <p class="intro">Making it easy and fast for sellers to identify their active listing to manage.</p>
-        <div class="pair">
-          <figure class="device">
-            <img src="images/depop/ui/tabs-active.webp" width="342" height="735" alt="Concept A, Active tab. Unsold listings, three selected, with Boost, Discount, Mark sold, and Delete along the bottom." loading="lazy" decoding="async">
-            <figcaption>Active</figcaption>
-          </figure>
-          <figure class="device">
-            <img src="images/depop/ui/tabs-sold.webp" width="341" height="735" alt="Concept A, Sold tab. Sold listings are separated from active ones, with the same bulk actions along the bottom." loading="lazy" decoding="async">
-            <figcaption>Sold</figcaption>
-          </figure>
+    <div data-switch>
+      <div class="steps" role="tablist" aria-label="Concept screens">
+        <button type="button" role="tab" id="tab-a" aria-controls="panel-a" aria-selected="true">Tabs</button>
+        <button type="button" role="tab" id="tab-b" aria-controls="panel-b" aria-selected="false" tabindex="-1">Pop up</button>
+      </div>
+      <div id="panel-a" data-panel role="tabpanel" aria-labelledby="tab-a">
+        <div class="frame">
+          <div class="frame-row">
+            <figure>
+              <img src="images/depop/ui/tabs-active.webp" width="342" height="735" alt="Active tab. Unsold listings, three selected, with Boost, Discount, Mark sold and Delete." loading="lazy" decoding="async">
+              <figcaption>Active</figcaption>
+            </figure>
+            <figure>
+              <img src="images/depop/ui/tabs-sold.webp" width="341" height="735" alt="Sold tab. Sold listings kept separate from active ones." loading="lazy" decoding="async">
+              <figcaption>Sold</figcaption>
+            </figure>
+          </div>
         </div>
-      </article>
-
-      <article class="concept reveal">
-        <p class="label">Concept B</p>
-        <h3>Pop up</h3>
-        <p class="intro">Making it easy for sellers to discover bulk management actions.</p>
-        <div class="pair">
-          <figure class="device">
-            <img src="images/depop/ui/popup-menu.webp" width="341" height="735" alt="Concept B on the shop page. A menu offers Boost, Discount, Mark sold, and Delete above the Manage listings button." loading="lazy" decoding="async">
-            <figcaption>Discover actions</figcaption>
-          </figure>
-          <figure class="device">
-            <img src="images/depop/ui/popup-boost.webp" width="341" height="735" alt="Concept B with six listings selected and a Boost button at the bottom of the grid." loading="lazy" decoding="async">
-            <figcaption>Then act</figcaption>
-          </figure>
+      </div>
+      <div id="panel-b" data-panel role="tabpanel" aria-labelledby="tab-b" hidden>
+        <div class="frame">
+          <div class="frame-row">
+            <figure>
+              <img src="images/depop/ui/popup-menu.webp" width="341" height="735" alt="Pop up on the shop. Boost, Discount, Mark sold and Delete, above Manage listings." loading="lazy" decoding="async">
+              <figcaption>Actions</figcaption>
+            </figure>
+            <figure>
+              <img src="images/depop/ui/popup-boost.webp" width="341" height="735" alt="Six listings selected, with a Boost button." loading="lazy" decoding="async">
+              <figcaption>Boost</figcaption>
+            </figure>
+          </div>
         </div>
-      </article>
+      </div>
     </div>
-  </section>
 
-  <section class="sec" id="testing">
-    <div class="page">
-      <header class="sec-h reveal">
-        <p class="idx">04</p>
-        <h2>Usability testing</h2>
-      </header>
-      <p class="narrow reveal">Sellers were asked how easy or difficult it was to boost a listing on each prototype. Each chart is 13 responses, from very difficult to very easy.</p>
-      <div class="test-grid">
-        <figure class="test reveal">
-          <h3>Concept A · Tabs</h3>
-          <p class="ease"><b>62%</b> of sellers found this prototype very easy to use</p>
-          <p class="ask">1. How easy or difficult was it to ‘boost’ a listing on this prototype?</p>
-          <p class="responses">13 responses</p>
-          <div class="scale"><span>Very difficult</span><span>Very easy</span></div>
-          <ol class="likert">
-            <li><span class="lv">1</span><span class="track"><span class="fill" style="--p:0"></span></span><span class="pct">0%</span></li>
-            <li><span class="lv">2</span><span class="track"><span class="fill" style="--p:0"></span></span><span class="pct">0%</span></li>
-            <li><span class="lv">3</span><span class="track"><span class="fill" style="--p:0"></span></span><span class="pct">0%</span></li>
-            <li><span class="lv">4</span><span class="track"><span class="fill" style="--p:8"></span></span><span class="pct">8%</span></li>
-            <li><span class="lv">5</span><span class="track"><span class="fill" style="--p:15"></span></span><span class="pct">15%</span></li>
-            <li><span class="lv">6</span><span class="track"><span class="fill" style="--p:15"></span></span><span class="pct">15%</span></li>
-            <li><span class="lv">7</span><span class="track"><span class="fill hot" style="--p:62"></span></span><span class="pct">62%</span></li>
-          </ol>
-          <ul class="notes">
-            <li><strong>Pro.</strong> Participants found the boosting &amp; discount flow to be fast, intuitive, and easy to perform.</li>
-            <li><strong>Con.</strong> The seller actions at the bottom was not immediately noticeable.</li>
-          </ul>
+    <p>Sellers want to be informed that they can perform bulk actions, such as boosting and creating discounts, directly on the manage listings page. Prototype 2 simplified discovering and selecting those actions. 85% of participants rated Prototype 2 as easier to navigate and use compared to other prototype. That is the pop up: the only prototype 85% of sellers found very easy to use.</p>
+
+    <h2 id="shipped">What shipped?</h2>
+
+    <h3>The button says what the page does</h3>
+    <p>Before, sellers didn’t know they could bulk manage their listings using the Manage Listings feature. After, it was clearer that ‘Manage Listings’ is about bulk management of listings. The button reads Bulk actions.</p>
+    <p>36% more sellers boosted from the shop page during the A/B test as a result of the improved UX copy.</p>
+    <div class="frame">
+      <div class="frame-row">
+        <figure>
+          <img src="images/depop/ui/shop-manage.webp" width="361" height="780" alt="Before. The shop button says Manage listings." loading="lazy" decoding="async">
+          <figcaption>Before</figcaption>
         </figure>
-        <figure class="test reveal">
-          <h3>Concept B · Pop up</h3>
-          <p class="ease"><b>85%</b> of sellers found this prototype very easy to use</p>
-          <p class="ask">1. How easy or difficult was it to ‘boost’ a listing on this prototype?</p>
-          <p class="responses">13 responses</p>
-          <div class="scale"><span>Very difficult</span><span>Very easy</span></div>
-          <ol class="likert">
-            <li><span class="lv">1</span><span class="track"><span class="fill" style="--p:0"></span></span><span class="pct">0%</span></li>
-            <li><span class="lv">2</span><span class="track"><span class="fill" style="--p:0"></span></span><span class="pct">0%</span></li>
-            <li><span class="lv">3</span><span class="track"><span class="fill" style="--p:0"></span></span><span class="pct">0%</span></li>
-            <li><span class="lv">4</span><span class="track"><span class="fill" style="--p:0"></span></span><span class="pct">0%</span></li>
-            <li><span class="lv">5</span><span class="track"><span class="fill" style="--p:15"></span></span><span class="pct">15%</span></li>
-            <li><span class="lv">6</span><span class="track"><span class="fill" style="--p:0"></span></span><span class="pct">0%</span></li>
-            <li><span class="lv">7</span><span class="track"><span class="fill hot" style="--p:85"></span></span><span class="pct">85%</span></li>
-          </ol>
-          <ul class="notes">
-            <li><strong>Pro.</strong> Participants generally found the boosting, discounting, and other flows fast, intuitive, and easy to perform due to the visible actions on the page.</li>
-            <li><strong>Con.</strong> Some participants initially selected items on the profile page intending to boost them instead of using the manage listing CTA.</li>
-          </ul>
+        <figure>
+          <img src="images/depop/ui/shop-selling.webp" width="369" height="780" alt="After. Selling tab, and a button labeled Bulk actions." loading="lazy" decoding="async">
+          <figcaption>After</figcaption>
         </figure>
       </div>
-      <div class="take reveal">
-        <h3>Key research takeaways</h3>
-        <p>The notes call the stronger direction Prototype 2. That lines up with Concept B, the pop-up: it is the prototype 85% of sellers found very easy to use.</p>
-        <ol>
-          <li>Sellers want to be informed that they can perform bulk actions, such as boosting and creating discounts, directly on the manage listings page.</li>
-          <li>Prototype 2 simplified the process of discovering and selecting different actions on the Manage Listings page.</li>
-          <li>85% of participants rated Prototype 2 as easier to navigate and use compared to other prototype.</li>
-        </ol>
+    </div>
+
+    <h3>Every action is in one sheet</h3>
+    <p>Before, sellers couldn’t discover all the available actions to manage their listings in a clear and intuitive way. After, Bulk actions lists Boost, Discount, Mark as sold, Unboost and Delete.</p>
+    <p>+11% more sellers engaged with the manage listing action during the A/B test.</p>
+    <div class="frame">
+      <div class="frame-row">
+        <figure>
+          <img src="images/depop/ui/sold-grid.webp" width="383" height="756" alt="Before. Actions sit on a bottom bar under a grid of sold items." loading="lazy" decoding="async">
+          <figcaption>Before</figcaption>
+        </figure>
+        <figure>
+          <img src="images/depop/ui/actions-sheet.webp" width="373" height="780" alt="After. A sheet titled Bulk actions, with Boost, Discount, Mark as sold, Unboost and Delete." loading="lazy" decoding="async">
+          <figcaption>After</figcaption>
+        </figure>
       </div>
     </div>
-  </section>
 
-  <section class="sec" id="design">
-    <div class="page">
-      <header class="sec-h reveal">
-        <p class="idx">05</p>
-        <h2>Designs</h2>
-      </header>
-
-      <article class="move reveal">
-        <div class="copy">
-          <p class="label">Copy</p>
-          <h3>Make bulk management obvious</h3>
-          <p><strong>Before.</strong> Sellers don’t know they can bulk manage their listings using the Manage Listings feature.</p>
-          <p><strong>After.</strong> Made it clearer that ‘Manage Listings’ is about bulk management of listings. On the shop, the button reads Bulk actions.</p>
-          <p class="metric">36% more sellers boosted from the shop page during the A/B test as a result of the improved UX copy.</p>
-        </div>
-        <div class="shots">
-          <figure class="device">
-            <img src="images/depop/ui/shop-manage.webp" width="361" height="780" alt="Before. Shop tabs and a button labeled Manage listings." loading="lazy" decoding="async">
-            <figcaption>Before</figcaption>
-          </figure>
-          <figure class="device">
-            <img src="images/depop/ui/shop-selling.webp" width="369" height="780" alt="After. Selling, Likes and Saves, and Purchases tabs, with a button labeled Bulk actions." loading="lazy" decoding="async">
-            <figcaption>After</figcaption>
-          </figure>
-        </div>
-      </article>
-
-      <article class="move reveal">
-        <div class="copy">
-          <p class="label">Actions</p>
-          <h3>Make the actions easy to find</h3>
-          <p><strong>Before.</strong> Sellers couldn’t discover all the available actions to manage their listings in a clear and intuitive way. Boost, Discount, Mark sold, and Delete sat on a bottom bar, under a grid of sold items.</p>
-          <p><strong>After.</strong> Made it easier to discover actions for bulk management of listings. Bulk actions opens a sheet: Boost, Discount, Mark as sold, Unboost, and Delete.</p>
-          <p class="metric">+11% more sellers engaged with the manage listing action during the A/B test.</p>
-        </div>
-        <div class="shots">
-          <figure class="device">
-            <img src="images/depop/ui/sold-grid.webp" width="383" height="756" alt="Before. Sold-heavy grid with Boost, Discount, Mark sold, and Delete on the bottom bar." loading="lazy" decoding="async">
-            <figcaption>Before</figcaption>
-          </figure>
-          <figure class="device">
-            <img src="images/depop/ui/actions-sheet.webp" width="373" height="780" alt="After. A Bulk actions sheet lists Boost, Discount, Mark as sold, Unboost, and Delete." loading="lazy" decoding="async">
-            <figcaption>After</figcaption>
-          </figure>
-        </div>
-      </article>
-
-      <article class="move reveal">
-        <div class="copy">
-          <p class="label">What opens first</p>
-          <h3>Open on unboosted, unsold listings</h3>
-          <p><strong>Before.</strong> Sellers couldn’t discover all the available actions to manage their listings in a clear and intuitive way.</p>
-          <p><strong>After.</strong> We automatically showed sellers their listings based on items that are unboosted and unsold.</p>
-          <p class="metric">+32% more sellers boosting their listings from the shop page during the A/B test as a result of the improved visibility of the actions.</p>
-        </div>
-        <div class="shots">
-          <figure class="device">
-            <img src="images/depop/ui/sold-grid.webp" width="383" height="756" alt="Before. The manage listings grid still leads with sold items." loading="lazy" decoding="async">
-            <figcaption>Before</figcaption>
-          </figure>
-          <figure class="device">
-            <img src="images/depop/ui/unboosted.webp" width="373" height="780" alt="After. Listings without a sold label. Three are selected, and a Boost button sits at the bottom." loading="lazy" decoding="async">
-            <figcaption>After</figcaption>
-          </figure>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <section class="impact" id="impact">
-    <div class="page reveal">
-      <header class="sec-h">
-        <p class="idx">06</p>
-        <h2>Impact</h2>
-        <p>Boosting from the shop page.</p>
-      </header>
-      <div class="chart">
-        <div class="col">
-          <p class="whisper">went from this</p>
-          <div class="grow"><div class="shaft" style="--h:39.3%">12%</div></div>
-          <p class="when">Jan 2024</p>
-        </div>
-        <div class="col">
-          <p class="whisper">to this</p>
-          <div class="grow"><div class="shaft mint" style="--h:100%">30.5%</div></div>
-          <p class="when">May 2024</p>
-        </div>
+    <h3>Open on listings that can still be boosted</h3>
+    <p>Before, the same sold-first grid. After, sellers were shown listings based on items that are unboosted and unsold.</p>
+    <p>+32% more sellers boosting their listings from the shop page during the A/B test as a result of the improved visibility of the actions.</p>
+    <div class="frame">
+      <div class="frame-row">
+        <figure>
+          <img src="images/depop/ui/sold-grid.webp" width="383" height="756" alt="Before. Sold items still lead the grid." loading="lazy" decoding="async">
+          <figcaption>Before</figcaption>
+        </figure>
+        <figure>
+          <img src="images/depop/ui/unboosted.webp" width="373" height="780" alt="After. Unsold listings, three selected, and a Boost button." loading="lazy" decoding="async">
+          <figcaption>After</figcaption>
+        </figure>
       </div>
-      <p class="aside">The move is what the case study reports for boosting from the shop page between January and May 2024. The A/B results for copy, the action sheet, and the filtered list sit with each design above.</p>
-      <p class="aside"><a class="end" href="index.html#work">Back to work</a></p>
     </div>
-  </section>
+
+    <h2 id="result">How did we do?</h2>
+    <p>Boosting from the shop page went from <span class="led">12%</span> in January 2024 to <span class="led">30.5%</span> in May 2024. The A/B results above are separate reads: copy, the action sheet, and showing unboosted, unsold listings first.</p>
+  </article>
+
+  <div class="end">
+    <a class="home" href="index.html#work">← Back to work</a>
+    <span class="credit">Designed by Chidinma Aniugbo</span>
+  </div>
 </main>
-
-<footer class="page foot">
-  <span>Designed by Chidinma Aniugbo</span>
-  <span><a href="mailto:chidinmaaniugbo@gmail.com">chidinmaaniugbo@gmail.com</a></span>
-  <span>© 2026</span>
-</footer>
 <script src="depop.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 <title>Chidinma Aniugbo — Product Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=115">
+<link rel="stylesheet" href="styles.css?v=116">
 <link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png"><link rel="apple-touch-icon" href="images/favicon-180.png"></head><body>
 <div class="cursor" aria-hidden="true"><span></span></div>
 <header class="nav">
@@ -14,7 +14,7 @@
 
 <section class="stage" id="top">
   <div class="hero">
-    <h1 class="hero-text">Hi I&apos;m Dinma <span class="fly photo"><img src="images/me-circle.png" alt="Dinma Aniugbo"></span> I turn<br class="mbr"> complex problems <span class="fly logo c-monday"><img src="images/monday-circle.png?v=4" alt="monday.com"></span> into solutions <span class="fly logo c-shopify"><img src="images/shopify-circle.png" alt="Shopify"></span> that<br> drive growth <span class="fly logo c-depop"><img src="images/depop-circle.png" alt="Depop"></span> build trust, and are beautifully designed.</h1>
+    <h1 class="hero-text">Hi I&apos;m Dinma <span class="fly photo"><img src="images/me-circle.png" alt="Dinma Aniugbo"></span> I turn<br class="mbr"> complex problems <span class="fly logo c-monday"><img src="images/monday-circle.png?v=4" alt="monday.com"></span> into solutions <span class="fly logo c-depop"><img src="images/depop-circle.png" alt="Depop"></span> that<br> drive growth <span class="fly logo c-shopify"><img src="images/shopify-circle.png" alt="Shopify"></span> build trust, and are beautifully designed.</h1>
     <p class="hero-sub">Scroll</p>
   </div>
   <div class="strip">
@@ -39,13 +39,13 @@
           <img src="images/monday-circle.png?v=4" alt="" width="64" height="64">
           <span class="vh">monday.com</span>
         </button>
-        <button class="work-tab is-logo" type="button" role="tab" id="work-tab-1" data-dock="shopify" data-color="#967cef" aria-controls="work-panel-1" aria-selected="false" tabindex="-1">
-          <img src="images/shopify-circle.png" alt="" width="64" height="64">
-          <span class="vh">Shopify Logistics</span>
-        </button>
         <button class="work-tab is-logo" type="button" role="tab" id="work-tab-2" data-dock="depop" data-color="#75D1FD" aria-controls="work-panel-2" aria-selected="true" tabindex="0">
           <img src="images/depop-circle.png" alt="" width="64" height="64">
           <span class="vh">Depop</span>
+        </button>
+        <button class="work-tab is-logo" type="button" role="tab" id="work-tab-1" data-dock="shopify" data-color="#967cef" aria-controls="work-panel-1" aria-selected="false" tabindex="-1">
+          <img src="images/shopify-circle.png" alt="" width="64" height="64">
+          <span class="vh">Shopify Logistics</span>
         </button>
         <span class="work-pip" aria-hidden="true"></span>
       </div>
@@ -64,18 +64,6 @@
           <img class="work-mark" src="images/monday-circle.png?v=4" alt="monday.com">
         </div>
       </article>
-      <article class="work-panel" id="work-panel-1" role="tabpanel" aria-labelledby="work-tab-1">
-        <div class="work-copy">
-          <p class="ptag">Shopify Logistics · B2B · Web</p>
-          <h3>Improving barcode handling &amp; compliance in Shopify Logistics</h3>
-          <p>Fixed missing and duplicate barcodes, enabling standard barcodes on 230,000+ products.</p>
-          <dl><div><dt>Role</dt><dd>Product Designer</dd></div><div><dt>Year</dt><dd>2022–23</dd></div></dl>
-          <a class="work-link" href="case-study.html">View case study</a>
-        </div>
-        <div class="work-visual" data-tone="#967cef">
-          <img src="images/project-2.png" alt="Shopify Logistics barcode screens" width="1200" height="750">
-        </div>
-      </article>
       <article class="work-panel is-on" id="work-panel-2" role="tabpanel" aria-labelledby="work-tab-2">
         <div class="work-copy">
           <p class="ptag">Depop · Marketplace · Mobile</p>
@@ -86,6 +74,18 @@
         </div>
         <div class="work-visual is-phone" data-tone="#75D1FD">
           <img src="images/depop-shop-2.gif?v=3" alt="Depop shop screen" width="600" height="1359">
+        </div>
+      </article>
+      <article class="work-panel" id="work-panel-1" role="tabpanel" aria-labelledby="work-tab-1">
+        <div class="work-copy">
+          <p class="ptag">Shopify Logistics · B2B · Web</p>
+          <h3>Improving barcode handling &amp; compliance in Shopify Logistics</h3>
+          <p>Fixed missing and duplicate barcodes, enabling standard barcodes on 230,000+ products.</p>
+          <dl><div><dt>Role</dt><dd>Product Designer</dd></div><div><dt>Year</dt><dd>2022–23</dd></div></dl>
+          <a class="work-link" href="case-study.html">View case study</a>
+        </div>
+        <div class="work-visual" data-tone="#967cef">
+          <img src="images/project-2.png" alt="Shopify Logistics barcode screens" width="1200" height="750">
         </div>
       </article>
     </div>
@@ -100,8 +100,7 @@
 </section>
 <footer class="foot"><span>Designed by Chidinma Aniugbo</span><span>© 2026</span></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="main.js?v=93"></script>
+<script src="main.js?v=94"></script>
 <script src="bg-tiles.js?v=5"></script></body></html>

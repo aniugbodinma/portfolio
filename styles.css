@@ -291,10 +291,10 @@ h2{font-size:clamp(32px,4vw,51px);font-weight:500;letter-spacing:-.03em;line-hei
 .work-tab{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;position:relative;z-index:1}
 .work-tab.is-text{font-size:10px;font-weight:600;letter-spacing:.01em;line-height:1.05;text-align:center;padding:4px}
 .work-tab img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
-.work-pip{position:absolute;left:0;top:0;width:72px;height:72px;border-radius:50%;z-index:0;pointer-events:none;background:#75D1FD;transition:transform .45s var(--ease),background-color .45s var(--ease)}
+.work-pip{position:absolute;left:0;top:0;width:72px;height:72px;border-radius:50%;z-index:0;pointer-events:none;background:#75D1FD;transition:transform .35s var(--ease),background-color .35s var(--ease)}
 .work-panels{background:#fff;border-radius:28px;box-shadow:0 24px 70px rgba(16,21,28,.06)}
 .work-panel{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:28px;padding:40px 36px;align-items:center}
-.projects.work-ready .work-panels{position:relative;overflow:hidden;transition:height .4s var(--ease)}
+.projects.work-ready .work-panels{position:relative;overflow:hidden;transition:height .35s var(--ease)}
 .projects.work-ready .work-panel{position:absolute;left:0;right:0;top:0;width:100%;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s var(--ease),visibility 0s linear .35s}
 .projects.work-ready .work-panel.is-on{opacity:1;visibility:visible;z-index:1;pointer-events:auto;transition:opacity .35s var(--ease),visibility 0s}
 .work-copy h3{font-size:clamp(28px,3vw,42px);font-weight:500;letter-spacing:-.03em;line-height:1.05;margin:8px 0 12px}
@@ -312,8 +312,7 @@ h2{font-size:clamp(32px,4vw,51px);font-weight:500;letter-spacing:-.03em;line-hei
 .work-visual.is-phone img{width:auto;height:min(440px,64vw);max-height:none;background:transparent;border-radius:32px}
 .work-mark{width:128px !important;height:128px;border-radius:50%;background:transparent !important}
 .logo-flight{position:fixed;z-index:30;pointer-events:none;border-radius:50%;object-fit:cover}
-.projects.is-motion:not(.is-docked) .work-tab.is-logo img{opacity:0}
-.projects.is-motion.is-docked .work-tab.is-logo img{opacity:1}
+.projects.is-flight .work-tab.is-logo img{opacity:0}
 @media (hover:hover) and (pointer:fine){
   .work-tab,.work-arrow{cursor:none}
 }

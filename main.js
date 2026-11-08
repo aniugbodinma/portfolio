@@ -48,6 +48,14 @@
     let current = Math.max(0, tabs.findIndex(t => t.getAttribute('aria-selected') === 'true'));
     const pip = root.querySelector('.work-pip');
     const list = root.querySelector('.work-tabs');
+    const frame = root.querySelector('.work-panels');
+    function fit(animate) {
+      const panel = panels[current];
+      if (!frame || !panel) return;
+      if (!animate) frame.style.transition = 'none';
+      frame.style.height = panel.offsetHeight + 'px';
+      if (!animate) requestAnimationFrame(() => { frame.style.transition = ''; });
+    }
     function placePip(animate) {
       const tab = tabs[current];
       if (!pip || !tab || !list) return;
@@ -74,6 +82,7 @@
         panel.setAttribute('aria-hidden', on ? 'false' : 'true');
       });
       placePip(true);
+      fit(true);
     }
     tabs.forEach((tab, i) => tab.addEventListener('click', () => select(i, false)));
     if (list) list.addEventListener('keydown', e => {
@@ -86,8 +95,12 @@
       btn.addEventListener('click', () => select(current + Number(btn.dataset.dir), false));
     });
     select(current, false);
-    window.addEventListener('resize', () => placePip(false));
-    window.addEventListener('load', () => placePip(false));
+    fit(false);
+    window.addEventListener('resize', () => { placePip(false); fit(false); });
+    window.addEventListener('load', () => { placePip(false); fit(false); });
+    root.querySelectorAll('img').forEach(img => {
+      if (!img.complete) img.addEventListener('load', () => fit(false), { once: true });
+    });
   }
   initWorkTabs();
   if (!hasGsap) return;

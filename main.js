@@ -36,6 +36,60 @@
     document.addEventListener('mouseover', e => { cur.classList.toggle('view', !!e.target.closest('a,button,.card,.slot')); });
   }
 
+  function initWorkTabs() {
+    const root = document.querySelector('.projects');
+    if (!root || root.dataset.ready) return;
+    const tabs = [...root.querySelectorAll('[role="tab"]')];
+    const panels = [...root.querySelectorAll('[role="tabpanel"]')];
+    if (!tabs.length) return;
+    root.dataset.ready = '1';
+    root.classList.add('work-ready');
+    if (!reduce) root.classList.add('is-motion');
+    let current = Math.max(0, tabs.findIndex(t => t.getAttribute('aria-selected') === 'true'));
+    const pip = root.querySelector('.work-pip');
+    const list = root.querySelector('.work-tabs');
+    function placePip(animate) {
+      const tab = tabs[current];
+      if (!pip || !tab || !list) return;
+      const hr = list.getBoundingClientRect();
+      const tr = tab.getBoundingClientRect();
+      const x = tr.left - hr.left + tr.width / 2 - pip.offsetWidth / 2;
+      const y = tr.top - hr.top + tr.height / 2 - pip.offsetHeight / 2;
+      if (!animate) pip.style.transition = 'none';
+      pip.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      pip.style.background = tab.dataset.color || '#eceae4';
+      if (!animate) requestAnimationFrame(() => { pip.style.transition = ''; });
+    }
+    function select(i, focus) {
+      current = (i + tabs.length) % tabs.length;
+      tabs.forEach((tab, j) => {
+        const on = j === current;
+        tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        tab.tabIndex = on ? 0 : -1;
+        if (focus && on) tab.focus();
+      });
+      panels.forEach((panel, j) => {
+        const on = j === current;
+        panel.classList.toggle('is-on', on);
+        panel.setAttribute('aria-hidden', on ? 'false' : 'true');
+      });
+      placePip(true);
+    }
+    tabs.forEach((tab, i) => tab.addEventListener('click', () => select(i, false)));
+    if (list) list.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); select(current + 1, true); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); select(current - 1, true); }
+      else if (e.key === 'Home') { e.preventDefault(); select(0, true); }
+      else if (e.key === 'End') { e.preventDefault(); select(tabs.length - 1, true); }
+    });
+    root.querySelectorAll('.work-arrow').forEach(btn => {
+      btn.addEventListener('click', () => select(current + Number(btn.dataset.dir), false));
+    });
+    select(current, false);
+    window.addEventListener('resize', () => placePip(false));
+    window.addEventListener('load', () => placePip(false));
+  }
+  initWorkTabs();
   if (!hasGsap) return;
   gsap.registerPlugin(ScrollTrigger);
   const ease = 'power3.out';
@@ -48,6 +102,8 @@
   let tl = null;
 
   function build() {
+    if (typeof dockST !== 'undefined' && dockST) { dockST.kill(); dockST = null; }
+    if (typeof resetLogoDock === 'function') resetLogoDock();
     if (tl) { tl.scrollTrigger && tl.scrollTrigger.kill(); tl.kill(); tl = null; }
     gsap.set(flyers, { clearProps: 'transform' });
     gsap.set(slots, { clearProps: 'background' });
@@ -83,7 +139,7 @@
       }, 0.05 + i * 0.03);
     });
     // a rebuild (fonts finishing loading, window resize) must not drop the card back off-screen once the intro has played
-    if (heroState !== 'idle') { tl.progress(1); stage.classList.add('done'); heroState = 'done'; freeAfterGesture(); }
+    if (heroState !== 'idle') { tl.progress(1); stage.classList.add('done'); heroState = 'done'; armLogoDock(); freeAfterGesture(); }
   }
 
   // Hero intro plays on its own (time-based), scroll is held while it runs
@@ -105,13 +161,13 @@
     if (heroState === 'playing' || heroState === 'reversing') { e.cancelable && e.preventDefault(); return; }
     if (heroState === 'idle' && dy > 0 && atTop()) {
       e.cancelable && e.preventDefault(); heroState = 'playing'; hold();
-      tl.eventCallback('onComplete', () => { stage.classList.add('done'); heroState = 'done'; freeAfterGesture(); }); tl.timeScale(mobile() ? 1/3.5 : 0.5).play();
+      tl.eventCallback('onComplete', () => { stage.classList.add('done'); heroState = 'done'; armLogoDock(); freeAfterGesture(); }); tl.timeScale(mobile() ? 1/3.5 : 0.5).play();
     } else if (heroState === 'done' && dy < 0 && atTop()) {
       e.cancelable && e.preventDefault(); rev();
     }
   };
   // reverse at the same speed as the intro on mobile so scrolling up mirrors scrolling down
-  const rev = () => { heroState = 'reversing'; hold();
+  const rev = () => { resetLogoDock(); heroState = 'reversing'; hold();
     tl.eventCallback('onReverseComplete', () => { stage.classList.remove('done'); heroState = 'idle'; freeAfterGesture(); }); tl.timeScale(mobile() ? 1/2 : 0.6).reverse(); };
   // mobile: touch momentum carries the page to the top after the finger lifts, so start the reverse when the top is reached
   let lastY = window.scrollY || 0;
@@ -138,38 +194,75 @@
     gsap.from(el, { opacity: 0, y: 40, duration: 1, ease, scrollTrigger: { trigger: el, start: 'top 90%' } });
   });
 
-  // Projects: pinned card, one project at a time; one gesture = one project
-  const pcard = document.querySelector('.pcard');
-  if (pcard && !mobile() && !reduce) {
-    const medias = gsap.utils.toArray('.pmedia'), names = gsap.utils.toArray('.pname'), infos = gsap.utils.toArray('.pinfo');
-    const n = medias.length; let cur = 0, busy = false, t0 = 0, lastEvt = 0;
-    const sec = document.querySelector('.projects'); const moods = ['#F8F8F8','#f5f3ef','#f3f3f5','#f4f5f1']; sec.style.background = moods[0];
-    gsap.set(medias, { autoAlpha: 0, zIndex: 0 }); gsap.set(medias[0], { autoAlpha: 1, zIndex: 1 });
-    const show = (i, instant) => { if (i === cur && !instant) return; gsap.killTweensOf(medias); const prev = medias[cur]; cur = i; sec.style.background = moods[i] || '';
-      names.forEach((e, j) => e.classList.toggle('on', j === i)); infos.forEach((e, j) => e.classList.toggle('on', j === i));
-      medias.forEach((m, j) => { if (j !== i && m !== prev) gsap.set(m, { autoAlpha: 0, zIndex: 0 }); });
-      gsap.set(medias[i], { zIndex: 1 });
-      if (instant) { gsap.set(medias, { autoAlpha: 0 }); gsap.set(medias[i], { autoAlpha: 1, y: 0 }); return; }
-      gsap.fromTo(medias[i], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: .45, ease: 'power2.out' });
-      gsap.to(prev, { autoAlpha: 0, duration: .3, ease: 'power1.out', onComplete: () => gsap.set(prev, { zIndex: 0 }) }); };
-    const st = ScrollTrigger.create({ trigger: '.projects', start: 'top top', end: '+=' + (n - 1) * 25 + '%', pin: true,
-      onEnter: () => { if (!busy) { jump(0); arrive(); } }, onEnterBack: () => { if (!busy) { jump(n - 1); arrive(); } } });
-    const arrive = () => { busy = true; t0 = performance.now(); lastEvt = t0; }; // absorb the rest of the scroll that brought us here
-    const posFor = i => st.start + (st.end - st.start) * i / (n - 1);
-    const jump = i => { show(i, true); const y = posFor(i); if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else window.scrollTo(0, y); };
-    const inRange = () => { const y = window.scrollY; return y >= st.start - 2 && y <= st.end + 2; };
-    const step = (dir, e) => {
-      if (mobile() || !inRange()) return;
-      const next = cur + dir;
-      if (next < 0 || next >= n) { if (busy) { e.preventDefault(); e.stopImmediatePropagation(); } return; } // let the page scroll on past the ends
-      e.preventDefault(); e.stopImmediatePropagation();
-      if (busy) return; busy = true; t0 = performance.now();
-      show(next); const y = posFor(next); if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); else window.scrollTo(0, y); };
-    // a trackpad flick keeps firing wheel events; stay locked until 500ms passed and the wheel has been quiet for 180ms
-    setInterval(() => { const t = performance.now(); if (busy && t - t0 > 500 && t - lastEvt > 180) busy = false; }, 50);
-    window.addEventListener('wheel', e => { if (inRange() && !mobile()) lastEvt = performance.now();
-      if (Math.abs(e.deltaY) < 2 && !busy) return; step(e.deltaY > 0 ? 1 : -1, e); }, { passive: false, capture: true });
-    window.addEventListener('keydown', e => { if (['ArrowDown','PageDown',' '].includes(e.key)) step(1, e); else if (['ArrowUp','PageUp'].includes(e.key)) step(-1, e); }, { capture: true });
+  // Logos leave the about card and settle on the work tabs. Scroll-scrubbed, so it reverses.
+  let dockST = null, dockHomes = null;
+  const dockPairs = () => [
+    [document.querySelector('.fly.c-monday'), document.querySelector('[data-dock="monday"]')],
+    [document.querySelector('.fly.c-shopify'), document.querySelector('[data-dock="shopify"]')],
+    [document.querySelector('.fly.c-depop'), document.querySelector('[data-dock="depop"]')]
+  ].filter(pair => pair[0] && pair[1]);
+  function clearLogoClones() {
+    document.querySelectorAll('.logo-flight').forEach(n => n.remove());
+  }
+  function resetLogoDock() {
+    clearLogoClones();
+    if (dockHomes) dockHomes.forEach(item => { item.clone = null; });
+    document.querySelectorAll('.fly.logo').forEach(el => { el.style.opacity = ''; });
+    const sec = document.querySelector('.projects');
+    if (sec) sec.classList.remove('is-docked');
+  }
+  function logoDocPoint(el) {
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width / 2 + window.scrollX, y: r.top + r.height / 2 + window.scrollY, w: r.width };
+  }
+  function captureDockHomes() {
+    return dockPairs().map(([fly, tab]) => {
+      const home = logoDocPoint(fly);
+      return { fly, tab, home, clone: null };
+    });
+  }
+  function applyLogoDock(p) {
+    const sec = document.querySelector('.projects');
+    if (reduce || heroState !== 'done' || !dockHomes) { resetLogoDock(); return; }
+    if (p <= 0.001) { resetLogoDock(); return; }
+    if (sec) sec.classList.toggle('is-docked', p > 0.94);
+    dockHomes.forEach(item => {
+      item.fly.style.opacity = '0';
+      const target = logoDocPoint(item.tab);
+      const x = item.home.x + (target.x - item.home.x) * p;
+      const y = item.home.y + (target.y - item.home.y) * p;
+      const w = item.home.w + (target.w - item.home.w) * p;
+      if (!item.clone) {
+        const img = item.fly.querySelector('img');
+        const clone = document.createElement('img');
+        clone.className = 'logo-flight';
+        clone.alt = '';
+        clone.setAttribute('aria-hidden', 'true');
+        if (img) clone.src = img.currentSrc || img.src;
+        document.body.appendChild(clone);
+        item.clone = clone;
+      }
+      item.clone.hidden = p > 0.94;
+      item.clone.style.width = w + 'px';
+      item.clone.style.height = w + 'px';
+      item.clone.style.left = (x - window.scrollX - w / 2) + 'px';
+      item.clone.style.top = (y - window.scrollY - w / 2) + 'px';
+    });
+  }
+  function armLogoDock() {
+    if (reduce || !document.querySelector('.work-tabs')) return;
+    resetLogoDock();
+    dockHomes = captureDockHomes();
+    if (dockST) dockST.kill();
+    dockST = ScrollTrigger.create({
+      trigger: '.projects',
+      start: 'top 92%',
+      end: 'top 48%',
+      scrub: true,
+      invalidateOnRefresh: false,
+      onUpdate: self => applyLogoDock(self.progress)
+    });
+    applyLogoDock(dockST.progress);
   }
 
   window.addEventListener('load', () => setTimeout(() => { window.__pageReady = true; }, 300));

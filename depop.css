@@ -133,6 +133,24 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
   filter: drop-shadow(0 14px 18px rgba(2, 6, 23, 0.16));
 }
+.frame > img { border-radius: 10px; box-shadow: none; filter: none; }
+.charts { display: grid; gap: 16px; }
+.charts img { border-radius: 10px; box-shadow: none; filter: none; background: #fff; }
+.shot { margin: 22px 0 8px; }
+.shot img { width: 100%; border-radius: 10px; box-shadow: none; filter: none; }
+.flow img { width: min(250px, 72%); margin: 0 auto; border-radius: 22px; }
+.play {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  margin-top: 4px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+}
 .frame figcaption, .cap {
   margin: 10px auto 0;
   max-width: var(--col);
@@ -176,23 +194,6 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .tt { margin: 0 0 12px; font-size: 15px; font-weight: 500; line-height: 1.35; }
 .cmp ul { margin: 0; padding: 0; list-style: none; font-size: 13.5px; line-height: 1.45; }
 .cmp li { padding: 7px 0; border-top: 1px solid rgba(21, 22, 24, 0.08); }
-
-.bars {
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 8px 12px;
-  align-items: center;
-  margin: 8px 0 18px;
-  font-size: 13px;
-}
-.bars i {
-  display: block;
-  height: 10px;
-  width: var(--w);
-  background: var(--blue);
-}
-.bars i.a { background: #cec807; }
-.bars i.b { background: #30f1b6; }
 
 .end {
   display: flex;

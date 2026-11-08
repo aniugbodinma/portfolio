@@ -34,4 +34,23 @@
     });
   });
   if (reduce && bar) bar.style.transition = "none";
+
+  var flow = document.getElementById("boost-flow");
+  var play = document.getElementById("boost-play");
+  if (flow && play) {
+    play.addEventListener("click", function () {
+      var on = flow.getAttribute("data-playing") === "1";
+      if (on) {
+        flow.src = flow.getAttribute("data-still");
+        flow.removeAttribute("data-playing");
+        play.textContent = "Play boost flow";
+        play.setAttribute("aria-pressed", "false");
+      } else {
+        flow.src = flow.getAttribute("data-gif");
+        flow.setAttribute("data-playing", "1");
+        play.textContent = "Stop";
+        play.setAttribute("aria-pressed", "true");
+      }
+    });
+  }
 })();

@@ -6,24 +6,17 @@
   // Placeholder gradients on the strip slots (match the inline images)
   document.querySelectorAll('.slot').forEach((s, i) => s.classList.add('g' + (i + 1)));
 
-  // Lenis smooth scroll
-  let lenis = null;
-  if (window.Lenis && !reduce) {
-    lenis = new Lenis({ duration: 1.15, easing: t => 1 - Math.pow(1 - t, 4) });
-    if (hasGsap) {
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add(t => lenis.raf(t * 1000));
-      gsap.ticker.lagSmoothing(0);
-    } else {
-      const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
-      requestAnimationFrame(raf);
-    }
-    document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
-      const id = a.getAttribute('href');
-      if (id.length > 1) { e.preventDefault(); lenis.scrollTo(id, { offset: -40 }); }
-      else { e.preventDefault(); lenis.scrollTo(0); }
-    }));
-  }
+  // In-page links. The hero timeline, if it is still running, is settled first so the about card and logos are in place.
+  let finishHero = function () {};
+  document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id.length > 1 && !document.querySelector(id)) return;
+    e.preventDefault();
+    finishHero();
+    const behavior = reduce ? 'auto' : 'smooth';
+    if (id.length > 1) document.querySelector(id).scrollIntoView({ behavior, block: 'start' });
+    else window.scrollTo({ top: 0, behavior });
+  }));
 
   // Custom cursor
   const cur = document.querySelector('.cursor');
@@ -44,7 +37,6 @@
     if (!tabs.length) return;
     root.dataset.ready = '1';
     root.classList.add('work-ready');
-    if (!reduce) root.classList.add('is-motion');
     let current = Math.max(0, tabs.findIndex(t => t.getAttribute('aria-selected') === 'true'));
     const pip = root.querySelector('.work-pip');
     const list = root.querySelector('.work-tabs');
@@ -152,7 +144,7 @@
       }, 0.05 + i * 0.03);
     });
     // a rebuild (fonts finishing loading, window resize) must not drop the card back off-screen once the intro has played
-    if (heroState !== 'idle') { tl.progress(1); stage.classList.add('done'); heroState = 'done'; armLogoDock(); freeAfterGesture(); }
+    if (heroState !== 'idle' || (window.scrollY || 0) > 8) { tl.progress(1); stage.classList.add('done'); heroState = 'done'; armLogoDock(); }
   }
 
   // Hero intro plays on its own (time-based), scroll is held while it runs
@@ -160,31 +152,35 @@
   window.scrollTo(0, 0);
   let heroState = 'idle'; // idle | playing | done | reversing
   const atTop = () => (window.scrollY || 0) < 4;
-  const hold = () => { if (lenis) lenis.stop(); document.documentElement.style.overflow = 'hidden'; };
-  const freeAfterGesture = () => { let q, done = false; const go = () => { if (done) return; done = true; clearTimeout(q); clearTimeout(cap);
-      ['wheel','touchmove'].forEach(e => window.removeEventListener(e, wait));
-      document.documentElement.style.overflow = ''; document.documentElement.classList.remove('lenis-stopped');
-      if (lenis) { lenis.start(); lenis.resize && lenis.resize(); } ScrollTrigger.refresh(); };
-    const wait = () => { clearTimeout(q); q = setTimeout(go, 250); };
-    const cap = setTimeout(go, 700); // never stay locked, even with trackpad momentum
-    ['wheel','touchmove'].forEach(e => window.addEventListener(e, wait, { passive: true })); wait(); };
+  finishHero = function () {
+    if (!tl || reduce || heroState === 'done') return;
+    tl.progress(1);
+    stage.classList.add('done');
+    heroState = 'done';
+    armLogoDock();
+  };
   let touchY = 0;
   const intent = (dy, e) => {
     if (!tl || reduce) return;
+    if (e.target && e.target.closest && e.target.closest('.work-tabs, input, textarea, select')) return;
     if (heroState === 'playing' || heroState === 'reversing') { e.cancelable && e.preventDefault(); return; }
     if (heroState === 'idle' && dy > 0 && atTop()) {
-      e.cancelable && e.preventDefault(); heroState = 'playing'; hold();
-      tl.eventCallback('onComplete', () => { stage.classList.add('done'); heroState = 'done'; armLogoDock(); freeAfterGesture(); }); tl.timeScale(mobile() ? 1/3.5 : 0.5).play();
+      e.cancelable && e.preventDefault(); heroState = 'playing';
+      tl.eventCallback('onComplete', () => { stage.classList.add('done'); heroState = 'done'; armLogoDock(); }); tl.timeScale(mobile() ? 1/3.5 : 0.5).play();
     } else if (heroState === 'done' && dy < 0 && atTop()) {
       e.cancelable && e.preventDefault(); rev();
     }
   };
-  // reverse at the same speed as the intro on mobile so scrolling up mirrors scrolling down
-  const rev = () => { resetLogoDock(); heroState = 'reversing'; hold();
-    tl.eventCallback('onReverseComplete', () => { stage.classList.remove('done'); heroState = 'idle'; freeAfterGesture(); }); tl.timeScale(mobile() ? 1/2 : 0.6).reverse(); };
+  // Desktop return matches the intro. Mobile return stays at 2s, shorter than the 3.5s intro.
+  const rev = () => {
+    if (heroState !== 'done') return;
+    resetLogoDock(); heroState = 'reversing';
+    tl.eventCallback('onReverseComplete', () => { stage.classList.remove('done'); heroState = 'idle'; }); tl.timeScale(mobile() ? 1/2 : 0.5).reverse();
+  };
   // mobile: touch momentum carries the page to the top after the finger lifts, so start the reverse when the top is reached
   let lastY = window.scrollY || 0;
   window.addEventListener('scroll', () => { const y = window.scrollY || 0;
+    if (tl && !reduce && heroState === 'idle' && y > 8) finishHero();
     if (tl && !reduce && mobile() && heroState === 'done' && y < 4 && lastY > y) rev();
     lastY = y; }, { passive: true });
   window.addEventListener('wheel', e => intent(e.deltaY, e), { passive: false });
@@ -211,8 +207,8 @@
   let dockST = null, dockHomes = null;
   const dockPairs = () => [
     [document.querySelector('.fly.c-monday'), document.querySelector('[data-dock="monday"]')],
-    [document.querySelector('.fly.c-shopify'), document.querySelector('[data-dock="shopify"]')],
-    [document.querySelector('.fly.c-depop'), document.querySelector('[data-dock="depop"]')]
+    [document.querySelector('.fly.c-depop'), document.querySelector('[data-dock="depop"]')],
+    [document.querySelector('.fly.c-shopify'), document.querySelector('[data-dock="shopify"]')]
   ].filter(pair => pair[0] && pair[1]);
   function clearLogoClones() {
     document.querySelectorAll('.logo-flight').forEach(n => n.remove());
@@ -222,7 +218,7 @@
     if (dockHomes) dockHomes.forEach(item => { item.clone = null; });
     document.querySelectorAll('.fly.logo').forEach(el => { el.style.opacity = ''; });
     const sec = document.querySelector('.projects');
-    if (sec) sec.classList.remove('is-docked');
+    if (sec) sec.classList.remove('is-docked', 'is-flight');
   }
   function logoDocPoint(el) {
     const r = el.getBoundingClientRect();
@@ -238,7 +234,10 @@
     const sec = document.querySelector('.projects');
     if (reduce || heroState !== 'done' || !dockHomes) { resetLogoDock(); return; }
     if (p <= 0.001) { resetLogoDock(); return; }
-    if (sec) sec.classList.toggle('is-docked', p > 0.94);
+    if (sec) {
+      sec.classList.toggle('is-flight', p > 0.001 && p <= 0.94);
+      sec.classList.toggle('is-docked', p > 0.94);
+    }
     dockHomes.forEach(item => {
       item.fly.style.opacity = '0';
       const target = logoDocPoint(item.tab);

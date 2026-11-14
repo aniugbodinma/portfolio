@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dinma Aniugbo</title>
-<meta name="description" content="Hello from Dinma Aniugbo. The website is still under construction. Say hi on LinkedIn, Instagram and TikTok, or visit the portfolio.">
+<meta name="description" content="Hello from Dinma Aniugbo. The website is still under construction. Say hi on LinkedIn, Instagram and TikTok.">
 <meta property="og:title" content="Dinma Aniugbo">
-<meta property="og:description" content="Hello there. The website is still under construction. Say hi on LinkedIn, Instagram and TikTok, or visit the portfolio.">
+<meta property="og:description" content="Hello there. The website is still under construction. Say hi on LinkedIn, Instagram and TikTok.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://dinmaaniugbo.com/">
 <meta name="theme-color" content="#F8F8F8">
@@ -34,7 +34,18 @@
   }
   a { color: inherit; }
   :focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    perspective: 900px;
+  }
+  .bg i { display: block; font-style: normal; }
   .page {
+    position: relative;
+    z-index: 1;
     min-height: 100%;
     min-height: 100dvh;
     display: flex;
@@ -69,30 +80,11 @@
     font-size: 18px;
     line-height: 1.5;
   }
-  .go {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    align-self: flex-start;
-    margin-top: 32px;
-    padding: 14px 22px;
-    border-radius: 999px;
-    background: var(--ink);
-    color: #fff;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-  }
-  .go span {
-    color: rgba(255, 255, 255, 0.62);
-    font-weight: 400;
-  }
-  .go:hover { background: #000; }
   .social {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin: 28px 0 0;
+    margin: 32px 0 0;
     padding: 0;
     list-style: none;
   }
@@ -123,7 +115,6 @@
   }
   .d1 { animation-delay: 0.08s; }
   .d2 { animation-delay: 0.16s; }
-  .d3 { animation-delay: 0.24s; }
   @keyframes rise {
     from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: none; }
@@ -131,7 +122,6 @@
   @media (max-width: 560px) {
     .page { padding: 22px 20px 24px; }
     .lead { font-size: 16px; }
-    .go { width: 100%; justify-content: space-between; }
     .social a { flex: 1 1 auto; justify-content: center; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -140,13 +130,13 @@
 </style>
 </head>
 <body>
+<div class="bg" aria-hidden="true"></div>
 <div class="page">
   <p class="mark">Dinma Aniugbo</p>
   <main>
     <h1 class="rise">Dinma Aniugbo</h1>
     <p class="lead rise d1">Hello there, my website is still under construction. Say hi on LinkedIn, Instagram and TikTok.</p>
-    <a class="go rise d2" href="https://design.dinmaaniugbo.com">Portfolio <span>design.dinmaaniugbo.com</span></a>
-    <ul class="social rise d3">
+    <ul class="social rise d2">
       <li>
         <a href="https://www.linkedin.com/in/aniugbo-chidinma/" target="_blank" rel="noopener">
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4.7 3.3A2.2 2.2 0 1 0 4.7 7.7 2.2 2.2 0 0 0 4.7 3.3zM3 9h3.4v12H3zM10 9h3.3v1.6h.1c.5-.9 1.6-1.8 3.3-1.8 3.5 0 4.2 2.3 4.2 5.3V21H17.5v-5.3c0-1.3 0-2.9-1.8-2.9s-2 1.4-2 2.8V21H10z"/></svg>
@@ -169,5 +159,51 @@
   </main>
   <p class="foot"><span>Designed by Dinma Aniugbo</span><span>© 2026</span></p>
 </div>
+<script>
+(function () {
+  var layer = document.querySelector('.bg');
+  var reduce = false;
+  try { reduce = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  var mx = -999, my = -999, tiles = [];
+  var rest = 'rgba(0,0,0,.0088)';
+  function size() { return innerWidth <= 820 ? 52 : 70; }
+  function build() {
+    layer.replaceChildren();
+    tiles = [];
+    var s = size(), w = innerWidth, h = innerHeight;
+    for (var y = 0; y < h; y += s) {
+      for (var x = 0; x < w; x += s) {
+        var t = document.createElement('i');
+        t.style.cssText = 'position:absolute;left:' + (x + 4) + 'px;top:' + (y + 4) + 'px;width:' + (s - 8) + 'px;height:' + (s - 8) + 'px;border-radius:12px;background:' + rest + ';transition:transform .5s cubic-bezier(.25,1,.5,1),background .5s';
+        layer.appendChild(t);
+        tiles.push([t, x + s / 2, y + s / 2]);
+      }
+    }
+  }
+  build();
+  addEventListener('resize', build);
+  if (reduce) return;
+  addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; });
+  addEventListener('mouseleave', function () { mx = my = -999; });
+  var tp = function (e) {
+    var touch = e.touches && e.touches[0];
+    if (!touch) return;
+    mx = touch.clientX; my = touch.clientY;
+  };
+  addEventListener('touchstart', tp, { passive: true });
+  addEventListener('touchmove', tp, { passive: true });
+  addEventListener('touchend', function () { setTimeout(function () { mx = my = -999; }, 250); }, { passive: true });
+  (function frame() {
+    for (var i = 0; i < tiles.length; i++) {
+      var t = tiles[i][0], x = tiles[i][1], y = tiles[i][2];
+      var dx = mx - x, dy = my - y, d = Math.hypot(dx, dy);
+      var k = Math.max(0, 1 - d / 240);
+      t.style.transform = k ? 'rotateX(' + (-dy / d * k * 13) + 'deg) rotateY(' + (dx / d * k * 13) + 'deg) scale(' + (1 - k * 0.06) + ')' : 'none';
+      t.style.background = k ? 'rgba(150,124,239,' + (0.0088 + k * 0.0495) + ')' : rest;
+    }
+    requestAnimationFrame(frame);
+  })();
+})();
+</script>
 </body>
 </html>

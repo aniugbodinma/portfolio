@@ -350,6 +350,14 @@ h2{font-size:clamp(34px,4.1vw,56px);font-weight:400;letter-spacing:-.02em;line-h
 .about-logos img{width:64px;height:64px;border-radius:50%;object-fit:cover;display:block}
 h1.about-lead{font-weight:400;line-height:1.18;letter-spacing:-.02em}
 .hero-text,h1.about-lead,h2,.work-copy h3{font-family:"Instrument Serif",Georgia,serif;font-style:normal;font-weight:400;font-synthesis:none}
+.photo-call{position:relative;display:inline-block;vertical-align:middle;outline:none}
+.photo-hello{position:absolute;left:50%;bottom:calc(100% + 6px);z-index:8;transform:translateX(-50%);opacity:0;pointer-events:none;transition:opacity .25s ease-out;white-space:nowrap}
+.photo-hello-text{font-family:Inter,system-ui,sans-serif;font-size:1rem;font-weight:700;line-height:1;letter-spacing:-.01em;color:#111}
+.photo-hello-arrow{position:absolute;left:50%;top:100%;width:110px;height:36px;margin-left:-6px;overflow:visible;display:block}
+.fly.photo{transition:transform .25s ease-out}
+.photo-call:hover .photo-hello,.photo-call:focus-within .photo-hello{opacity:1}
+.photo-call:hover .fly.photo,.photo-call:focus-within .fly.photo{transform:scale(1.05)}
+.photo-call:focus-visible .fly.photo{outline:2px solid #111;outline-offset:3px}
 @media (max-width:820px){
   .about-page{align-items:flex-start;padding:96px 16px 48px}
   .about-card{padding:28px 22px;border-radius:24px}

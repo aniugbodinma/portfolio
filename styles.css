@@ -10,7 +10,7 @@ a{color:inherit;text-decoration:none}
 .overline.light{color:#777}
 .stage{position:relative;height:100vh;overflow:hidden}
 .hero{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 6vw;text-align:center}
-.hero-text{font-size:clamp(30px,3.25vw,48px);font-weight:400;letter-spacing:-.02em;line-height:1.22;max-width:1080px}
+.hero-text{font-size:clamp(30px,3.85vw,57px);font-weight:400;letter-spacing:-.02em;line-height:1.22;max-width:1080px}
 .nowrap{white-space:nowrap}
 .fly{display:inline-block;width:1.5em;height:.95em;border-radius:.28em;vertical-align:-.1em;margin:0 .04em;will-change:transform;position:relative;z-index:5}
 .hero-sub{position:absolute;bottom:32px;font-size:13px;color:var(--grey);letter-spacing:.1em;text-transform:uppercase}

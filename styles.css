@@ -350,6 +350,7 @@ h2{font-size:clamp(34px,4.1vw,56px);font-weight:400;letter-spacing:-.02em;line-h
 .about-logos img{width:64px;height:64px;border-radius:50%;object-fit:cover;display:block}
 h1.about-lead{font-weight:400;line-height:1.18;letter-spacing:-.02em}
 .hero-text,h1.about-lead,h2,.work-copy h3{font-family:"Instrument Serif",Georgia,serif;font-style:normal;font-weight:400;font-synthesis:none}
+.hero-text{font-weight:700;font-synthesis:weight}
 @media (max-width:820px){
   .about-page{align-items:flex-start;padding:96px 16px 48px}
   .about-card{padding:28px 22px;border-radius:24px}

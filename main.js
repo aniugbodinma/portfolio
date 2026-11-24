@@ -6,16 +6,17 @@
   // Placeholder gradients on the strip slots (match the inline images)
   document.querySelectorAll('.slot').forEach((s, i) => s.classList.add('g' + (i + 1)));
 
-  // In-page links. The hero timeline, if it is still running, is settled first so the about card and logos are in place.
+  // In-page links. The logo returns to the hero. Other hashes settle the intro first.
   let finishHero = function () {};
+  let showHero = function () {};
   document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
     const id = a.getAttribute('href');
     if (id.length > 1 && !document.querySelector(id)) return;
     e.preventDefault();
-    finishHero();
     const behavior = reduce ? 'auto' : 'smooth';
-    if (id.length > 1) document.querySelector(id).scrollIntoView({ behavior, block: 'start' });
-    else window.scrollTo({ top: 0, behavior });
+    if (id.length <= 1 || id === '#top') { showHero(); window.scrollTo({ top: 0, behavior }); return; }
+    finishHero();
+    document.querySelector(id).scrollIntoView({ behavior, block: 'start' });
   }));
 
   // Custom cursor
@@ -95,69 +96,165 @@
     });
   }
   initWorkTabs();
+
+  // Company name under the hero. Pointer hover and keyboard focus only, so a tap does not change the mobile page.
+  const companyLabel = document.querySelector('.hero-company');
+  if (companyLabel && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let active = null;
+    const showName = el => {
+      const img = el.querySelector('img');
+      const name = img && img.alt;
+      if (!name) return;
+      companyLabel.textContent = name;
+      companyLabel.classList.add('is-on');
+      active = el;
+    };
+    const hideName = el => {
+      if (active && el && active !== el) return;
+      companyLabel.classList.remove('is-on');
+      active = null;
+    };
+    document.querySelectorAll('.fly.logo').forEach(el => {
+      el.tabIndex = 0;
+      el.addEventListener('mouseenter', () => showName(el));
+      el.addEventListener('mouseleave', () => hideName(el));
+      el.addEventListener('focus', () => { if (el.matches(':focus-visible')) showName(el); });
+      el.addEventListener('blur', () => hideName(el));
+    });
+  }
+
   if (!hasGsap) return;
   gsap.registerPlugin(ScrollTrigger);
   const ease = 'power3.out';
 
-  // Signature: hero images fly into the dark strip
+  // First scroll plays the same timed flight, straight from the hero into the work section.
   const stage = document.querySelector('.stage');
-  const strip = document.querySelector('.strip');
+  if (!stage) return;
   const flyers = [...document.querySelectorAll('.fly')];
-  const slots = [...document.querySelectorAll('.slot')];
+  const logos = ['.fly.c-monday', '.fly.c-depop', '.fly.c-shopify'].map(sel => document.querySelector(sel)).filter(Boolean);
+  const tabs = ['monday', 'depop', 'shopify'].map(name => document.querySelector('[data-dock="' + name + '"]'));
   let tl = null;
+  let gate = 0;
+  const scrollEase = gsap.parseEase('power2.out');
+  const flyEase = gsap.parseEase('power2.inOut');
+
+  function clearFlights() {
+    document.querySelectorAll('.logo-flight').forEach(n => n.remove());
+    logos.forEach(el => { el.style.opacity = ''; });
+    const sec = document.querySelector('.projects');
+    if (sec) sec.classList.remove('is-docked', 'is-flight');
+  }
+  function workTop() {
+    const work = document.querySelector('#work');
+    if (!work) return 0;
+    return Math.max(0, Math.round(work.getBoundingClientRect().top + (window.scrollY || 0)));
+  }
+  function placeFlights(t, sources, targets, clones) {
+    const sec = document.querySelector('.projects');
+    window.scrollTo(0, gate * scrollEase(Math.min(1, Math.max(0, t))));
+    let flying = false;
+    clones.forEach((clone, i) => {
+      const delay = 0.05 + i * 0.03;
+      let lp = flyEase(Math.max(0, Math.min(1, (t - delay) / 0.9)));
+      const s = sources[i], tgt = targets[i];
+      const x = s.x + (tgt.x - s.x) * lp;
+      const y = s.y + (tgt.y - s.y) * lp;
+      const w = s.w + (tgt.w - s.w) * lp;
+      clone.style.width = w + 'px';
+      clone.style.height = w + 'px';
+      clone.style.left = (x - w / 2) + 'px';
+      clone.style.top = (y - w / 2) + 'px';
+      clone.hidden = lp > 0.94;
+      if (!clone.hidden) flying = true;
+    });
+    if (sec) {
+      sec.classList.toggle('is-flight', flying);
+      sec.classList.toggle('is-docked', t > 0.98);
+    }
+  }
 
   function build() {
-    if (typeof dockST !== 'undefined' && dockST) { dockST.kill(); dockST = null; }
-    if (typeof resetLogoDock === 'function') resetLogoDock();
-    if (tl) { tl.scrollTrigger && tl.scrollTrigger.kill(); tl.kill(); tl = null; }
+    clearFlights();
+    if (tl) { tl.kill(); tl = null; }
     gsap.set(flyers, { clearProps: 'transform' });
-    gsap.set(slots, { clearProps: 'background' });
     stage.classList.remove('done');
     const m = mobile();
     document.documentElement.classList.toggle('anim-m', m && !reduce);
-    if (m && !reduce) slots.forEach(s => { s.querySelectorAll('img').forEach(im => im.remove()); s.style.background = ''; });
-    if (reduce) { gsap.set(strip, { clearProps: 'transform' }); slots.forEach((s,i)=>{ s.classList.add('g'+(i+1)); if (mobile() && flyers[i] && !s.querySelector('img')) { const im = flyers[i].querySelector('img'); if (im) { s.appendChild(im.cloneNode()); s.style.background = 'transparent'; } } }); stage.classList.add('done'); return; }
-    // measure slots at final strip position
-    const endY = m ? 0 : 50, startY = m ? 130 : 250;
-    gsap.set(strip, { yPercent: endY, y: 0 });
-    const targets = slots.map(s => s.getBoundingClientRect());
-    const peek = m ? strip.offsetHeight + 16 - 56 : 0;
-    gsap.set(strip, m ? { yPercent: 0, y: peek } : { yPercent: startY });
-    const sources = flyers.map(f => f.getBoundingClientRect());
-    slots.forEach(s => s.style.background = 'transparent');
-
-    tl = gsap.timeline({ paused: true, defaults: { ease: 'none' },
-      onComplete: () => stage.classList.add('done'),
-      onReverseComplete: () => stage.classList.remove('done') });
-    tl.to(strip, { yPercent: endY, y: 0, duration: 1, ease: 'power2.out' }, 0);
-    // hero text stays solid; the dark strip covers it
-    tl.to('.hero-sub', { opacity: 0, duration: 0.2 }, 0);
-    flyers.forEach((f, i) => {
-      const s = sources[i], t = targets[i];
-      if (!t) return;
-      tl.to(f, {
-        x: (t.left + t.width / 2) - (s.left + s.width / 2),
-        y: (t.top + t.height / 2) - (s.top + s.height / 2),
-        scale: t.width / s.width,
-        borderRadius: '50%',
-        duration: 0.9, ease: 'power2.inOut'
-      }, 0.05 + i * 0.03);
+    if (reduce) { stage.classList.add('done'); return; }
+    const was = window.scrollY || 0;
+    if (heroState === 'idle') window.scrollTo(0, 0);
+    gate = workTop();
+    const sources = logos.map(el => {
+      const r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width };
     });
-    // a rebuild (fonts finishing loading, window resize) must not drop the card back off-screen once the intro has played
-    if (heroState !== 'idle' || (window.scrollY || 0) > 8) { tl.progress(1); stage.classList.add('done'); heroState = 'done'; armLogoDock(); }
+    const targets = tabs.map(el => {
+      const r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + (window.scrollY || 0) + r.height / 2 - gate, w: r.width };
+    });
+    const clones = logos.map(el => {
+      const img = el.querySelector('img');
+      const clone = document.createElement('img');
+      clone.className = 'logo-flight';
+      clone.alt = '';
+      clone.hidden = true;
+      clone.setAttribute('aria-hidden', 'true');
+      if (img) clone.src = img.currentSrc || img.src;
+      document.body.appendChild(clone);
+      return clone;
+    });
+    const driver = { t: 0 };
+    tl = gsap.timeline({ paused: true, defaults: { ease: 'none' },
+      onComplete: () => { stage.classList.add('done'); heroState = 'done'; },
+      onReverseComplete: () => { stage.classList.remove('done'); heroState = 'idle'; clearFlights(); gsap.set('.hero-sub', { clearProps: 'opacity' }); } });
+    tl.to('.hero-sub', { opacity: 0, duration: 0.2 }, 0);
+    tl.to(driver, { t: 1, duration: 1, ease: 'none',
+      onStart: () => logos.forEach(el => { el.style.opacity = '0'; }),
+      onUpdate: () => {
+        const t = driver.t;
+        if (t <= 0) {
+          window.scrollTo(0, 0);
+          clones.forEach(c => { c.hidden = true; });
+          const sec = document.querySelector('.projects');
+          if (sec) sec.classList.remove('is-docked', 'is-flight');
+          return;
+        }
+        placeFlights(t, sources, targets, clones);
+      }
+    }, 0);
+    if (heroState !== 'idle' || was > 8) {
+      if (heroState === 'done' && was > gate + 24) {
+        stage.classList.add('done');
+        logos.forEach(el => { el.style.opacity = '0'; });
+        const sec = document.querySelector('.projects');
+        if (sec) sec.classList.add('is-docked');
+        window.scrollTo(0, was);
+      } else {
+        tl.progress(1);
+        stage.classList.add('done');
+        heroState = 'done';
+      }
+    }
   }
 
-  // Hero intro plays on its own (time-based), scroll is held while it runs
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
   let heroState = 'idle'; // idle | playing | done | reversing
   const atTop = () => (window.scrollY || 0) < 4;
+  const atGate = () => (window.scrollY || 0) <= gate + 2;
+  showHero = function () {
+    if (tl) { tl.pause(); tl.progress(0, true); }
+    heroState = 'idle';
+    stage.classList.remove('done');
+    clearFlights();
+    gsap.set('.hero-sub', { clearProps: 'opacity' });
+    window.scrollTo(0, 0);
+  };
   finishHero = function () {
     if (!tl || reduce || heroState === 'done') return;
     tl.progress(1);
     stage.classList.add('done');
     heroState = 'done';
-    armLogoDock();
   };
   let touchY = 0;
   const intent = (dy, e) => {
@@ -166,116 +263,38 @@
     if (heroState === 'playing' || heroState === 'reversing') { e.cancelable && e.preventDefault(); return; }
     if (heroState === 'idle' && dy > 0 && atTop()) {
       e.cancelable && e.preventDefault(); heroState = 'playing';
-      tl.eventCallback('onComplete', () => { stage.classList.add('done'); heroState = 'done'; armLogoDock(); }); tl.timeScale(mobile() ? 1/3.5 : 0.5).play();
-    } else if (heroState === 'done' && dy < 0 && atTop()) {
+      tl.timeScale(mobile() ? 1 / 3.5 : 0.5).play();
+    } else if (heroState === 'done' && dy < 0 && atGate()) {
       e.cancelable && e.preventDefault(); rev();
     }
   };
   // Desktop return matches the intro. Mobile return stays at 2s, shorter than the 3.5s intro.
   const rev = () => {
     if (heroState !== 'done') return;
-    resetLogoDock(); heroState = 'reversing';
-    tl.eventCallback('onReverseComplete', () => { stage.classList.remove('done'); heroState = 'idle'; }); tl.timeScale(mobile() ? 1/2 : 0.5).reverse();
+    heroState = 'reversing';
+    tl.timeScale(mobile() ? 1 / 2 : 0.5).reverse();
   };
-  // mobile: touch momentum carries the page to the top after the finger lifts, so start the reverse when the top is reached
   let lastY = window.scrollY || 0;
   window.addEventListener('scroll', () => { const y = window.scrollY || 0;
     if (tl && !reduce && heroState === 'idle' && y > 8) finishHero();
-    if (tl && !reduce && mobile() && heroState === 'done' && y < 4 && lastY > y) rev();
+    if (tl && !reduce && heroState === 'done' && y <= gate + 2 && lastY > y) rev();
     lastY = y; }, { passive: true });
   window.addEventListener('wheel', e => intent(e.deltaY, e), { passive: false });
   window.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
   window.addEventListener('touchmove', e => intent(touchY - e.touches[0].clientY, e), { passive: false });
   window.addEventListener('keydown', e => { if (['ArrowDown','PageDown',' '].includes(e.key)) intent(1, e); if (['ArrowUp','PageUp'].includes(e.key)) intent(-1, e); });
 
-  // Blur reveal headings
   document.querySelectorAll('.blur-reveal').forEach(h => {
     gsap.fromTo(h, { opacity: 0, filter: 'blur(14px)', scaleX: 1.08, x: -40, transformOrigin: 'left center' },
       { opacity: 1, filter: 'blur(0px)', scaleX: 1, x: 0, duration: 1.2, ease,
         scrollTrigger: { trigger: h, start: 'top 85%' } });
   });
-  // Parallax highlight
   const hl = document.querySelector('.hl-bg');
   if (hl) gsap.fromTo(hl, { x: -14, y: 6 }, { x: 14, y: -6, ease: 'none',
     scrollTrigger: { trigger: '.split', start: 'top bottom', end: 'bottom top', scrub: true } });
-  // Card stagger
   gsap.utils.toArray('.card, .steps > div, .cols3 > div').forEach(el => {
     gsap.from(el, { opacity: 0, y: 40, duration: 1, ease, scrollTrigger: { trigger: el, start: 'top 90%' } });
   });
-
-  // Logos leave the about card and settle on the work tabs. Scroll-scrubbed, so it reverses.
-  let dockST = null, dockHomes = null;
-  const dockPairs = () => [
-    [document.querySelector('.fly.c-monday'), document.querySelector('[data-dock="monday"]')],
-    [document.querySelector('.fly.c-depop'), document.querySelector('[data-dock="depop"]')],
-    [document.querySelector('.fly.c-shopify'), document.querySelector('[data-dock="shopify"]')]
-  ].filter(pair => pair[0] && pair[1]);
-  function clearLogoClones() {
-    document.querySelectorAll('.logo-flight').forEach(n => n.remove());
-  }
-  function resetLogoDock() {
-    clearLogoClones();
-    if (dockHomes) dockHomes.forEach(item => { item.clone = null; });
-    document.querySelectorAll('.fly.logo').forEach(el => { el.style.opacity = ''; });
-    const sec = document.querySelector('.projects');
-    if (sec) sec.classList.remove('is-docked', 'is-flight');
-  }
-  function logoDocPoint(el) {
-    const r = el.getBoundingClientRect();
-    return { x: r.left + r.width / 2 + window.scrollX, y: r.top + r.height / 2 + window.scrollY, w: r.width };
-  }
-  function captureDockHomes() {
-    return dockPairs().map(([fly, tab]) => {
-      const home = logoDocPoint(fly);
-      return { fly, tab, home, clone: null };
-    });
-  }
-  function applyLogoDock(p) {
-    const sec = document.querySelector('.projects');
-    if (reduce || heroState !== 'done' || !dockHomes) { resetLogoDock(); return; }
-    if (p <= 0.001) { resetLogoDock(); return; }
-    if (sec) {
-      sec.classList.toggle('is-flight', p > 0.001 && p <= 0.94);
-      sec.classList.toggle('is-docked', p > 0.94);
-    }
-    dockHomes.forEach(item => {
-      item.fly.style.opacity = '0';
-      const target = logoDocPoint(item.tab);
-      const x = item.home.x + (target.x - item.home.x) * p;
-      const y = item.home.y + (target.y - item.home.y) * p;
-      const w = item.home.w + (target.w - item.home.w) * p;
-      if (!item.clone) {
-        const img = item.fly.querySelector('img');
-        const clone = document.createElement('img');
-        clone.className = 'logo-flight';
-        clone.alt = '';
-        clone.setAttribute('aria-hidden', 'true');
-        if (img) clone.src = img.currentSrc || img.src;
-        document.body.appendChild(clone);
-        item.clone = clone;
-      }
-      item.clone.hidden = p > 0.94;
-      item.clone.style.width = w + 'px';
-      item.clone.style.height = w + 'px';
-      item.clone.style.left = (x - window.scrollX - w / 2) + 'px';
-      item.clone.style.top = (y - window.scrollY - w / 2) + 'px';
-    });
-  }
-  function armLogoDock() {
-    if (reduce || !document.querySelector('.work-tabs')) return;
-    resetLogoDock();
-    dockHomes = captureDockHomes();
-    if (dockST) dockST.kill();
-    dockST = ScrollTrigger.create({
-      trigger: '.projects',
-      start: 'top 92%',
-      end: 'top 48%',
-      scrub: true,
-      invalidateOnRefresh: false,
-      onUpdate: self => applyLogoDock(self.progress)
-    });
-    applyLogoDock(dockST.progress);
-  }
 
   window.addEventListener('load', () => setTimeout(() => { window.__pageReady = true; }, 300));
   const init = () => { build(); ScrollTrigger.refresh(); };

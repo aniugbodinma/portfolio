@@ -10,7 +10,8 @@ a{color:inherit;text-decoration:none}
 .overline.light{color:#777}
 .stage{position:relative;height:100vh;overflow:hidden}
 .hero{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 6vw;text-align:center}
-.hero-text{font-size:clamp(29px,4.3vw,62px);font-weight:500;letter-spacing:-.03em;line-height:1.12;max-width:1080px}
+.hero-text{font-size:clamp(28px,3.15vw,46px);font-weight:500;letter-spacing:-.03em;line-height:1.12;max-width:1080px}
+.nowrap{white-space:nowrap}
 .fly{display:inline-block;width:1.5em;height:.95em;border-radius:.28em;vertical-align:-.1em;margin:0 .04em;will-change:transform;position:relative;z-index:5}
 .hero-sub{position:absolute;bottom:32px;font-size:13px;color:var(--grey);letter-spacing:.1em;text-transform:uppercase}
 .g1{background:linear-gradient(135deg,#ffb5a7,#f7c873)}.g2{background:linear-gradient(135deg,#a7c7ff,#c3a7ff)}

@@ -353,3 +353,4 @@ h1.about-lead{font-weight:500}
   .about-card{padding:28px 22px;border-radius:24px}
   .about-photo,.about-logos img{width:48px;height:48px}
 }
+.hero-text,.about-lead,h2,.work-copy h3{font-family:"Cormorant Garamond",Georgia,serif;font-synthesis:none}
